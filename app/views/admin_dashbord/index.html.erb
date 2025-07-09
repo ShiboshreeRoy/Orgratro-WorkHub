@@ -1,4 +1,100 @@
-<div>
-  <h1 class="font-bold text-4xl">AdminDashbord#index</h1>
-  <p>Find me in app/views/admin_dashbord/index.html.erb</p>
-</div>
+<style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-blue-300">
+  <div class="flex flex-col md:flex-row h-screen">
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 bg-gray-900 text-white flex flex-col p-4 space-y-6">
+      <div class="text-2xl font-bold text-blue-300 mb-4 flex items-center">
+        <i class="fas fa-shield-alt mr-2"></i> Admin Panel
+      </div>
+      <nav class="flex flex-col space-y-4 text-sm">
+        <a href="#" class="flex items-center gap-3 hover:text-blue-400 transition">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+
+        <%= link_to admin_index_path, class: "flex items-center gap-3 hover:text-blue-400 transition" do %>
+          <i class="fas fa-users"></i> Manage Staff & Employees
+        <% end %>
+
+        <a href="#" class="flex items-center gap-3 hover:text-blue-400 transition">
+          <i class="fas fa-bell"></i> Notifications
+        </a>
+
+        <a href="#" class="flex items-center gap-3 hover:text-blue-400 transition">
+          <i class="fas fa-cogs"></i> Settings
+        </a>
+
+        <a href="#" class="flex items-center gap-3 hover:text-blue-400 transition">
+          <i class="fas fa-chart-bar"></i> Reports
+        </a>
+
+        <%= link_to destroy_user_session_path, method: :delete, class: "flex items-center gap-3 hover:text-red-400 transition" do %>
+          <i class="fas fa-sign-out-alt"></i> Logout
+        <% end %>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <header class="bg-gray-800 text-white p-4 flex flex-wrap justify-between items-center">
+        <h1 class="text-xl font-semibold">Dashboard Overview</h1>
+        <div class="flex items-center gap-4 text-sm">
+          <i class="fas fa-bell text-blue-300"></i>
+          <span>Welcome <%= current_user.email.split("@").first.capitalize if current_user.admin? %></span>
+        </div>
+      </header>
+
+      <!-- Dashboard Cards -->
+      <section class="flex-1 overflow-y-auto p-6 space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-blue-400 transition">
+            <h2 class="text-xl font-semibold text-blue-300 mb-2">
+              <i class="fas fa-user mr-2"></i>Total Users
+            </h2>
+            <p class="text-white text-3xl"><%= @total_user.count %></p>
+          </div>
+
+          <div class="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-blue-400 transition">
+            <h2 class="text-xl font-semibold text-blue-300 mb-2">
+              <i class="fas fa-chart-line mr-2"></i>Total Traffic
+            </h2>
+            <p class="text-white text-3xl"><%= @total_click.count %></p>
+          </div>
+
+          <div class="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-blue-400 transition">
+            <h2 class="text-xl font-semibold text-blue-300 mb-2">
+              <i class="fas fa-link mr-2"></i>Total Links
+            </h2>
+            <p class="text-white text-3xl"><%= @total_link.count %></p>
+          </div>
+        </div>
+
+        <!-- Recent Users List -->
+        <div class="bg-gray-900 mt-10 p-6 rounded-lg shadow-lg">
+          <h2 class="text-xl font-semibold text-blue-300 mb-4">
+            <i class="fas fa-clock mr-2"></i> Recently Registered Users
+          </h2>
+          <ul class="space-y-3 text-sm">
+            <% @recent_users.each do |user| %>
+              <li class="flex justify-between items-center border-b border-gray-700 pb-2">
+                <span class="flex items-center gap-2">
+                  <i class="fas fa-user-circle text-blue-400"></i>
+                  <%= user.email %>
+                </span>
+                <span class="text-gray-400">
+                  <%= user.created_at.strftime("%b %d, %Y %I:%M %p") %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
