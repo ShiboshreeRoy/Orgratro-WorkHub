@@ -1,0 +1,26 @@
+<footer class="bg-black mt-12 py-6 text-green-400 text-center font-mono tracking-wide relative">
+  <div class="flex justify-center space-x-8">
+    <a href="#" class="hover:text-green-600 transition flicker-link">Privacy Policy</a>
+    <a href="#" class="hover:text-green-600 transition flicker-link">Terms of Service</a>
+    <a href="#" class="hover:text-green-600 transition flicker-link">Contact</a>
+  </div>
+  <p class="mt-4 text-sm opacity-75 flicker-link">&copy; 2025 Orgatro It. All rights reserved.</p>
+</footer>
+
+<style>
+  /* Flicker glow for footer links */
+  @keyframes flickerFooter {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      opacity: 1;
+      text-shadow: 0 0 5px #39ff14;
+    }
+    20%, 22%, 24%, 55% {
+      opacity: 0.5;
+      text-shadow: none;
+    }
+  }
+
+  .flicker-link {
+    animation: flickerFooter 3s infinite alternate;
+  }
+</style>

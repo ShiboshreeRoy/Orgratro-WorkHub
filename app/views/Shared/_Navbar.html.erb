@@ -1,0 +1,45 @@
+  <nav class="bg-black px-4 py-3 shadow-lg">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Logo -->
+      <div class="text-green-500 text-2xl font-bold">
+        <%= image_tag("orgratro_it.png", class: "w-[50px] h-[50px]")%>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-6">
+        <a href="#" class="text-white hover:text-green-400 transition">Home</a>
+        <a href="#" class="text-white hover:text-green-400 transition">About</a>
+        <a href="#" class="text-white hover:text-green-400 transition">Services</a>
+        <a href="#" class="text-white hover:text-green-400 transition">Contact</a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button id="menu-toggle" class="text-green-500 focus:outline-none material-icons">
+          menu
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="md:hidden hidden mt-2 space-y-2 px-4">
+      <a href="#" class="block text-white hover:text-green-400">Home</a>
+      <a href="#" class="block text-white hover:text-green-400">About</a>
+      <a href="#" class="block text-white hover:text-green-400">Services</a>
+      <a href="#" class="block text-white hover:text-green-400">Contact</a>
+    </div>
+  </nav>
+
+  <script>
+    // Mobile menu toggle script with icon toggle
+    const btn = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+      // Toggle icon between 'menu' and 'close'
+      btn.textContent = menu.classList.contains('hidden') ? 'menu' : 'close';
+    });
+  </script>
+</body>
+</html>
