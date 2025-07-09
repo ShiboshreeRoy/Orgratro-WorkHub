@@ -13,6 +13,7 @@ Rails.application.routes.draw do
  resources :welcome do
   collection do
     get :about
+    get :service
   end
 end
 

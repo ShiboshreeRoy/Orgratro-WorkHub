@@ -6,102 +6,228 @@
   <title>Orgratro IT</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- TypeIt CDN for Auto Typer -->
+  <!-- TypeIt CDN -->
   <script src="https://cdn.jsdelivr.net/npm/typeit@8.7.1/dist/index.umd.js"></script>
 
-  <!-- Hacker Font (optional) -->
+  <!-- Hacker Font -->
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Share Tech Mono', monospace;
+      cursor: none;
+      overflow-x: hidden;
+      position: relative;
+      background-color: #000;
     }
 
     @keyframes fadeInUp {
       0% { opacity: 0; transform: translateY(40px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+
     .fade-in-up {
       animation: fadeInUp 1s ease-out forwards;
     }
 
-    /* Custom glowing effect */
     .glow {
       text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff, 0 0 20px #00f0ff;
     }
+
+    /* Custom Cursor */
+    .cursor-dot {
+      width: 14px;
+      height: 14px;
+      background: #00ffff;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      box-shadow: 0 0 8px #00f0ff, 0 0 20px #00f0ff, 0 0 40px #00f0ff;
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 0.1s ease;
+    }
+
+    .cursor-trail {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #00ffff;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: all 0.15s ease;
+    }
+    
+    /* Spider Animation */
+    .spider {
+      position: fixed;
+      z-index: 9998;
+      pointer-events: none;
+    }
+    
+    .spider-body {
+      width: 20px;
+      height: 20px;
+      background: #ff0055;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055;
+    }
+    
+    .spider-leg {
+      position: absolute;
+      height: 2px;
+      background: #ff0055;
+      transform-origin: left center;
+      box-shadow: 0 0 3px #ff0055;
+    }
+    
+    @keyframes spiderCrawl {
+      0% { top: -40px; left: -40px; transform: rotate(0deg); }
+      25% { top: calc(100% + 40px); left: -40px; transform: rotate(90deg); }
+      50% { top: calc(100% + 40px); left: calc(100% + 40px); transform: rotate(180deg); }
+      75% { top: -40px; left: calc(100% + 40px); transform: rotate(270deg); }
+      100% { top: -40px; left: -40px; transform: rotate(360deg); }
+    }
+    
+    .spider-crawl {
+      animation: spiderCrawl 45s infinite linear;
+    }
+    
+    .web-line {
+      position: fixed;
+      background: rgba(0, 240, 255, 0.1);
+      transform-origin: top left;
+      z-index: 9997;
+      box-shadow: 0 0 5px rgba(0, 240, 255, 0.3);
+    }
+    
+    @keyframes webPulse {
+      0% { opacity: 0.2; }
+      50% { opacity: 0.5; }
+      100% { opacity: 0.2; }
+    }
+    
+    .web-pulse {
+      animation: webPulse 3s infinite ease-in-out;
+    }
+    
+    .spider:hover .spider-body {
+      background: #ff3399;
+      box-shadow: 0 0 15px #ff3399, 0 0 30px #ff3399;
+    }
+    
+    /* Enhanced cursor trail effect */
+    .cursor-trail {
+      transition: transform 0.05s ease, opacity 0.3s ease;
+    }
+    
+    /* Add subtle background pattern */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0px, transparent 1px),
+        radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.05) 0px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: -1;
+    }
   </style>
 </head>
-<body class="bg-black text-white font-sans">
 
-  <!-- Hero Section with Auto Typer -->
-  <div class="min-h-screen flex items-center justify-center bg-black text-white px-6 fade-in-up">
-    <div class="text-center max-w-3xl">
+<body class="bg-black text-white">
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+  
+  <!-- Spider -->
+  <div class="spider spider-crawl" id="spider">
+    <!-- Body -->
+    <div class="spider-body"></div>
+    <!-- Legs -->
+    <div class="spider-leg" style="top: 3px; left: 10px; width: 25px; transform: rotate(30deg);"></div>
+    <div class="spider-leg" style="top: 7px; left: 10px; width: 25px; transform: rotate(60deg);"></div>
+    <div class="spider-leg" style="top: 11px; left: 10px; width: 25px; transform: rotate(90deg);"></div>
+    <div class="spider-leg" style="top: 15px; left: 10px; width: 25px; transform: rotate(120deg);"></div>
+    <div class="spider-leg" style="top: 3px; left: 10px; width: 25px; transform: rotate(-30deg);"></div>
+    <div class="spider-leg" style="top: 7px; left: 10px; width: 25px; transform: rotate(-60deg);"></div>
+    <div class="spider-leg" style="top: 11px; left: 10px; width: 25px; transform: rotate(-90deg);"></div>
+    <div class="spider-leg" style="top: 15px; left: 10px; width: 25px; transform: rotate(-120deg);"></div>
+  </div>
+  
+  <!-- Web lines -->
+  <div id="webLines"></div>
+
+  <!-- Hero Section -->
+  <div class="min-h-screen flex items-center justify-center px-6 fade-in-up">
+    <div class="text-center max-w-screen-2xl mx-auto">
       <h1 class="text-4xl md:text-6xl font-extrabold text-blue-400 mb-4 glow">
         Welcome to <span class="text-blue-500">Orgratro IT</span>
       </h1>
       <p id="auto-type" class="text-lg md:text-xl text-blue-200 mb-8 h-20"></p>
-      <% if user_signed_in? %>
-      <%= link_to "Learn & Earn More !",user_dashbord_index_path, class: "bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full text-lg transition transform hover:scale-105 duration-300"%>
-      <% else %>
-      <%= link_to "Learn & Earn More !",new_user_registration_path, class: "bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full text-lg transition transform hover:scale-105 duration-300"%>
-      <% end %>
 
+      <% if user_signed_in? %>
+        <%= link_to "Learn & Earn More!", user_dashbord_index_path, class: "bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full text-lg transition transform hover:scale-105 duration-300" %>
+      <% else %>
+        <%= link_to "Learn & Earn More!", new_user_registration_path, class: "bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full text-lg transition transform hover:scale-105 duration-300" %>
+      <% end %>
     </div>
   </div>
 
   <!-- About Section -->
-  <section class="py-16 px-6 bg-gray-900 text-white">
-    <div class="max-w-5xl mx-auto text-center">
+  <section class="py-16 px-6 bg-gray-900">
+    <div class="max-w-screen-xl mx-auto text-center">
       <h2 class="text-3xl md:text-4xl font-bold text-blue-300 mb-4">About Orgratro IT</h2>
-      <p class="text-lg text-gray-300">
+      <p class="text-lg text-gray-300 max-w-3xl mx-auto">
         At Orgratro IT, we are passionate about transforming digital ideas into reality. Our team specializes in delivering top-tier IT solutions tailored to your needs, with unmatched professionalism and dedication.
       </p>
     </div>
   </section>
 
   <!-- Services Section -->
-  <section class="py-20 bg-black text-white px-6">
-    <div class="max-w-6xl mx-auto">
+  <section class="py-20 px-6 bg-black">
+    <div class="max-w-screen-xl mx-auto">
       <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-300 mb-12">Our Core Services</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
-          <h3 class="text-xl font-semibold text-blue-400 mb-2">Software Development</h3>
-          <p class="text-gray-300">Custom enterprise software solutions built for performance and scalability.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
-          <h3 class="text-xl font-semibold text-blue-400 mb-2">Mobile App Development</h3>
-          <p class="text-gray-300">We design and develop iOS & Android apps with excellent UI/UX.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
-          <h3 class="text-xl font-semibold text-blue-400 mb-2">E-Branding & Identity</h3>
-          <p class="text-gray-300">Build your brand’s digital identity with creative design and strategy.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
-          <h3 class="text-xl font-semibold text-blue-400 mb-2">Digital Marketing</h3>
-          <p class="text-gray-300">SEO, SEM, Social Media, and campaigns that boost online visibility.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
-          <h3 class="text-xl font-semibold text-blue-400 mb-2">Video Editing</h3>
-          <p class="text-gray-300">Creative video editing services for marketing, branding, and storytelling.</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
-          <h3 class="text-xl font-semibold text-blue-400 mb-2">And 500+ More IT Solutions</h3>
-          <p class="text-gray-300">From cloud integration to tech consulting — we cover every corner of IT.</p>
-        </div>
+        <% [
+          ["Software Development", "Custom enterprise software solutions built for performance and scalability."],
+          ["Mobile App Development", "We design and develop iOS & Android apps with excellent UI/UX."],
+          ["E-Branding & Identity", "Build your brand’s digital identity with creative design and strategy."],
+          ["Digital Marketing", "SEO, SEM, Social Media, and campaigns that boost online visibility."],
+          ["Video Editing", "Creative video editing services for marketing, branding, and storytelling."],
+          ["And 500+ More IT Solutions", "From cloud integration to tech consulting — we cover every corner of IT."]
+        ].each do |title, desc| %>
+          <div class="bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-blue-500 transition">
+            <h3 class="text-xl font-semibold text-blue-400 mb-2"><%= title %></h3>
+            <p class="text-gray-300"><%= desc %></p>
+          </div>
+        <% end %>
       </div>
     </div>
   </section>
-
-  <!-- Call to Action -->
-  <section id="get-started" class="py-20 bg-blue-600 text-white text-center">
-    <h2 class="text-3xl font-bold mb-4">Ready to Build with Orgratro IT?</h2>
-    <p class="mb-6 text-lg">Join hundreds of businesses accelerating their growth with our expert IT services.</p>
-    <a href="#" class="bg-black hover:bg-gray-800 text-white px-8 py-3 rounded-full text-lg transition transform hover:scale-105 duration-300">
-      Contact Us Today
-    </a>
+  
+  <!-- CTA Section -->
+  <section class="py-20 bg-blue-600 text-white text-center">
+    <div class="max-w-screen-xl mx-auto">
+      <h2 class="text-3xl font-bold mb-4">Ready to Build with Orgratro IT?</h2>
+      <p class="mb-6 text-lg">Join hundreds of businesses accelerating their growth with our expert IT services.</p>
+      <a href="#get-started" class="bg-black hover:bg-gray-800 text-white px-8 py-3 rounded-full text-lg transition transform hover:scale-105 duration-300">
+        Contact Us Today
+      </a>
+    </div>
   </section>
+  
+  
 
-  <!-- Auto Typing Script -->
+  <!-- Typing Animation -->
   <script>
     new TypeIt("#auto-type", {
       speed: 50,
@@ -122,5 +248,106 @@
     .go();
   </script>
 
+  <!-- Cursor Animation Script -->
+  <script>
+    const cursorDot = document.getElementById("cursorDot");
+    const cursorTrail = document.getElementById("cursorTrail");
+
+    document.addEventListener("mousemove", (e) => {
+      const { clientX: x, clientY: y } = e;
+      cursorDot.style.left = `${x}px`;
+      cursorDot.style.top = `${y}px`;
+
+      cursorTrail.style.left = `${x}px`;
+      cursorTrail.style.top = `${y}px`;
+      
+      // Add trail effect when moving quickly
+      cursorTrail.style.opacity = '1';
+      setTimeout(() => {
+        cursorTrail.style.opacity = '0.5';
+        setTimeout(() => {
+          cursorTrail.style.opacity = '0.2';
+        }, 50);
+      }, 50);
+    });
+    
+    // Add trail effect when not moving
+    setInterval(() => {
+      cursorTrail.style.transform = `translate(-50%, -50%) scale(${0.9 + Math.random() * 0.2})`;
+    }, 1000);
+  </script>
+  
+  <!-- Web Generator -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const webLines = document.getElementById('webLines');
+      const numLines = 8;
+      
+      for (let i = 0; i < numLines; i++) {
+        const line = document.createElement('div');
+        line.classList.add('web-line', 'web-pulse');
+        
+        // Random position and angle
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+        const endX = Math.random() * window.innerWidth;
+        const endY = Math.random() * window.innerHeight;
+        
+        const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+        const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+        
+        line.style.width = `${length}px`;
+        line.style.height = '1px';
+        line.style.left = `${startX}px`;
+        line.style.top = `${startY}px`;
+        line.style.transform = `rotate(${angle}deg)`;
+        
+        // Random animation delay
+        line.style.animationDelay = `${Math.random() * 3}s`;
+        
+        webLines.appendChild(line);
+      }
+      
+      // Add spider trail effect
+      const spider = document.getElementById('spider');
+      let lastPosition = { x: -40, y: -40 };
+      
+      setInterval(() => {
+        const rect = spider.getBoundingClientRect();
+        const currentPosition = { 
+          x: rect.left + rect.width / 2, 
+          y: rect.top + rect.height / 2 
+        };
+        
+        if (Math.abs(currentPosition.x - lastPosition.x) > 5 || 
+            Math.abs(currentPosition.y - lastPosition.y) > 5) {
+          // Create trail
+          const trail = document.createElement('div');
+          trail.classList.add('web-line');
+          trail.style.width = '1px';
+          trail.style.height = '1px';
+          trail.style.left = `${currentPosition.x}px`;
+          trail.style.top = `${currentPosition.y}px`;
+          trail.style.backgroundColor = 'rgba(255, 0, 85, 0.3)';
+          trail.style.boxShadow = '0 0 5px rgba(255, 0, 85, 0.5)';
+          trail.style.borderRadius = '50%';
+          webLines.appendChild(trail);
+          
+          // Fade out trail
+          setTimeout(() => {
+            trail.style.opacity = '0';
+            trail.style.transition = 'opacity 5s';
+          }, 100);
+          
+          // Remove after animation
+          setTimeout(() => {
+            trail.remove();
+          }, 6000);
+          
+          lastPosition = currentPosition;
+        }
+      }, 100);
+    });
+  </script>
 </body>
 </html>

@@ -1,110 +1,143 @@
-<nav class="bg-black px-4 py-3 shadow-lg font-sans">
-  <div class="max-w-7xl mx-auto flex items-center justify-between">
-    <!-- Logo -->
-    <div class="flex items-center gap-2">
-      <%= image_tag("orgratro_it.png", class: "w-10 h-10") %>
-      <span class="text-green-500 text-2xl font-bold">Orgratro IT</span>
-    </div>
+<style>
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.blink {
+  animation: blink 1s infinite;
+}
+</style>
 
-    <!-- Desktop Menu -->
-    <div class="hidden md:flex space-x-6 items-center">
-      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
-        <i class="fas fa-house"></i> Home
-      </a>
-      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
-        <i class="fas fa-circle-info"></i> About
-      </a>
-      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
-        <i class="fas fa-screwdriver-wrench"></i> Services
-      </a>
-      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
-        <i class="fas fa-envelope"></i> Contact
-      </a>
 
+
+<nav class="bg-black text-white shadow-md sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center gap-2">
+        <%= image_tag("orgratro_it.png", class: "w-[35px] h-[35px]") %>
+        <%= link_to "OIW-Hub", root_path, class: "text-2xl font-bold text-indigo-600" %>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex md:items-center space-x-8">
+        <%= link_to "Home", root_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
+        <%= link_to "Services", service_welcome_index_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
+        <%= link_to "About", about_welcome_index_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
+        <%= link_to "Contact", root_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
+
+        <!-- Dropdown -->
+        <div class="relative">
+          <button id="accountDropdownBtn" class="text-gray-300 hover:text-indigo-400 font-medium focus:outline-none flex items-center gap-1">
+            Account
+            <svg class="w-4 h-4 transition-transform duration-300" id="arrowIcon" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg transition-all duration-200 transform scale-95 opacity-0 hidden origin-top z-50">
+            <% if user_signed_in? %>
+              <%= link_to "Dashboard", user_dashbord_index_path, class: "block px-4 py-2 text-gray-700 hover:bg-indigo-100" %>
+              <% if current_user.admin? %>
+                <%= link_to "Admin", admin_dashbord_index_path, class: "block px-4 py-2 text-gray-700 hover:bg-indigo-100" %>
+              <% end %>
+            <% else %>
+              <%= link_to "Intern Login", new_user_session_path, class: "block px-4 py-2 text-gray-700 hover:bg-indigo-100" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="hidden md:flex items-center">
       <% if user_signed_in? %>
-        <% if current_user.admin? %>
-          <%= link_to admin_dashbord_index_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
-            <i class="fas fa-user-shield"></i> Admin
-          <% end %>
-        <% end %>
+       <%= link_to root_path, class: "inline-flex items-center gap-2 px-6 py-3 text-white bg-gradient-to-r blink from-indigo-600 to-indigo-500 rounded-full shadow-lg transform active:scale-95 transition-all duration-200 hover:shadow-xl hover:ring-4 hover:ring-indigo-300/50" do %>
+  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 12l6-6m-6 6l6 6" />
+  </svg>
+  <span class="text-sm font-semibold tracking-wide">Send Message</span>
+<% end %>
 
-      <% elsif %>
-      <%= link_to user_dashbord_index_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
-          <i class="fas fa-tachometer-alt"></i> Dashboard
-        <% end %>
-         <% else %>
-        <%= link_to new_user_session_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
-          <i class="fas fa-sign-in-alt"></i> Login
-        <% end %>
-
-        <%= link_to new_user_registration_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
-          <i class="fas fa-user-plus"></i> Register
-        <% end %>
+      <% else %>
+      <%= link_to "Join", new_user_registration_path, class: "px-4 py-2 rounded-lg bg-indigo-600 text-white shadaw-lg font-semibold hover:bg-indigo-700 transition duration-200" %>
       <% end %>
-    </div>
+      </div>
 
-    <!-- Mobile Menu Button -->
-    <div class="md:hidden">
-      <button id="menu-toggle" class="text-green-500 text-2xl transition duration-300 focus:outline-none">
-        <i id="menu-icon" class="fas fa-bars"></i>
-      </button>
+      <!-- Mobile Menu Toggle -->
+      <div class="flex items-center md:hidden">
+        <button id="mobile-menu-btn" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Mobile Menu Dropdown -->
-  <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
-    <div class="flex flex-col px-4 py-2 space-y-3">
-      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
-        <i class="fas fa-house"></i> Home
-      </a>
-      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
-        <i class="fas fa-circle-info"></i> About
-      </a>
-      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
-        <i class="fas fa-screwdriver-wrench"></i> Services
-      </a>
-      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
-        <i class="fas fa-envelope"></i> Contact
-      </a>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2 transition-all duration-300 ease-in-out">
+    <%= link_to "Home", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
+    <%= link_to "Features", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
+    <%= link_to "Pricing", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
+    <%= link_to "Contact", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
 
+    <div class="border-t pt-2">
+      <span class="block text-gray-500 text-sm font-semibold">Account</span>
       <% if user_signed_in? %>
         <% if current_user.admin? %>
-          <%= link_to admin_index_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
-            <i class="fas fa-user-shield"></i> Admin
-          <% end %>
-        <% end %>
-
-        <%= link_to user_dashbord_index_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
-          <i class="fas fa-tachometer-alt"></i> Dashboard
+          <%= link_to "Admin Dashboard", admin_dashbord_index_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
+        <% else %>
+          <%= link_to "User Dashboard", user_dashbord_index_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
         <% end %>
       <% else %>
-        <%= link_to new_user_session_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
-          <i class="fas fa-sign-in-alt"></i> Login
-        <% end %>
-
-        <%= link_to new_user_registration_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
-          <i class="fas fa-user-plus"></i> Register
-        <% end %>
+        <%= link_to "Advertiser Login", root_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
+        <%= link_to "Intern/Publisher Login", new_user_session_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
       <% end %>
     </div>
+
+    <%= link_to "join", new_user_registration_path, class: "block px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition duration-200" %>
   </div>
 </nav>
-
 <script>
-  const btn = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  const icon = document.getElementById('menu-icon');
+  const accountBtn = document.getElementById('accountDropdownBtn');
+  const accountMenu = document.getElementById('accountDropdown');
+  const arrowIcon = document.getElementById('arrowIcon');
+  let isOpen = false;
 
-  btn.addEventListener('click', () => {
-    const isOpen = menu.classList.contains('max-h-0');
-    if (isOpen) {
-      menu.classList.remove('max-h-0');
-      menu.classList.add('max-h-[500px]');
-    } else {
-      menu.classList.remove('max-h-[500px]');
-      menu.classList.add('max-h-0');
+  accountBtn?.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent outer click from closing it immediately
+    isOpen = !isOpen;
+    accountMenu.classList.toggle('hidden');
+    setTimeout(() => {
+      if (isOpen) {
+        accountMenu.classList.add('opacity-100', 'scale-100');
+        accountMenu.classList.remove('opacity-0', 'scale-95');
+        arrowIcon.classList.add('rotate-180');
+      } else {
+        accountMenu.classList.remove('opacity-100', 'scale-100');
+        accountMenu.classList.add('opacity-0', 'scale-95');
+        arrowIcon.classList.remove('rotate-180');
+        setTimeout(() => accountMenu.classList.add('hidden'), 200);
+      }
+    }, 10);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!accountBtn.contains(e.target) && !accountMenu.contains(e.target) && isOpen) {
+      isOpen = false;
+      accountMenu.classList.remove('opacity-100', 'scale-100');
+      accountMenu.classList.add('opacity-0', 'scale-95');
+      arrowIcon.classList.remove('rotate-180');
+      setTimeout(() => accountMenu.classList.add('hidden'), 200);
     }
-    icon.classList.toggle('fa-bars');
-    icon.classList.toggle('fa-times');
+  });
+
+  // Mobile Menu Toggle
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileBtn?.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
   });
 </script>

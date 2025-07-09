@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orgratro WorkHub - Services</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <!-- Tippy.js Tooltips -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/themes/light.css" />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+<body class="relative overflow-x-hidden">
+
+  <!-- Services Section -->
+  <section id="services" class="relative py-24 px-6 lg:px-20 overflow-hidden">
+    <!-- Particle Background -->
+    <div id="services-particles" class="absolute inset-0 -z-10"></div>
+
+    <!-- Section Title -->
+    <h2 class="text-4xl lg:text-5xl font-extrabold text-center text-blue-400 mb-20 animate__animated animate__fadeInDown">
+      Our Core Services – Orgratro WorkHub
+    </h2>
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-7xl mx-auto animate__animated animate__fadeInUp">
+      
+      <!-- Service Card 1 -->
+      <div class="bg-gradient-to-br from-black to-gray-900 border border-blue-500 rounded-3xl p-8 shadow-[0_6px_30px_rgba(0,255,255,0.2)] transform hover:scale-105 transition duration-500 cursor-pointer service-card" data-tooltip="Plan and assign tasks with AI support and insights.">
+        <h3 class="text-2xl font-bold text-blue-300 mb-2">Smart Task Management</h3>
+        <p class="text-gray-300 text-sm">
+          Automate, delegate, and track progress with intelligent workflows.
+        </p>
+      </div>
+
+      <!-- Service Card 2 -->
+      <div class="bg-gradient-to-br from-black to-gray-900 border border-blue-500 rounded-3xl p-8 shadow-[0_6px_30px_rgba(0,255,255,0.2)] transform hover:scale-105 transition duration-500 cursor-pointer service-card" data-tooltip="Measure employee performance in real-time dashboards.">
+        <h3 class="text-2xl font-bold text-blue-300 mb-2">Real-time Analytics</h3>
+        <p class="text-gray-300 text-sm">
+          Get live insights into task completion, engagement, and outcomes.
+        </p>
+      </div>
+
+      <!-- Service Card 3 -->
+      <div class="bg-gradient-to-br from-black to-gray-900 border border-blue-500 rounded-3xl p-8 shadow-[0_6px_30px_rgba(0,255,255,0.2)] transform hover:scale-105 transition duration-500 cursor-pointer service-card" data-tooltip="Motivate your team with automatic gamified rewards.">
+        <h3 class="text-2xl font-bold text-blue-300 mb-2">Reward System</h3>
+        <p class="text-gray-300 text-sm">
+          Recognize achievements and distribute rewards automatically.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================= Scripts ======================= -->
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <!-- Tippy.js -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <!-- Init Particles -->
+  <script>
+    particlesJS("services-particles", {
+      particles: {
+        number: { value: 40 },
+        color: { value: "#00ffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.3 },
+        size: { value: 3 },
+        line_linked: { enable: true, color: "#00ffff" },
+        move: { enable: true, speed: 2 }
+      }
+    });
+  </script>
+
+  <!-- GSAP Animations -->
+  <script>
+    gsap.from(".service-card", {
+      y: 50,
+      opacity: 0,
+      stagger: 0.2,
+      duration: 1.2,
+      ease: "power3.out"
+    });
+  </script>
+
+  <!-- Tippy Tooltips -->
+  <script>
+    document.querySelectorAll('.service-card').forEach(card => {
+      tippy(card, {
+        content: card.getAttribute('data-tooltip'),
+        theme: 'light',
+        placement: 'top',
+      });
+    });
+  </script>
+
+</body>
+</html>

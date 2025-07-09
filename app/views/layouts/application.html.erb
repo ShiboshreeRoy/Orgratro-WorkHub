@@ -20,12 +20,13 @@
   </head>
 
   <body>
-    <main class="container">
-    <%= render "Shared/Navbar"%>
-    <%= render "Shared/Toster" %>
-      <%= yield %>
-    <%= render "Shared/Footer" %>
-    </main>
+    <main class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+  <%= render "Shared/Navbar" %>
+  <%= render "Shared/Toster" %>
+  <%= yield %>
+  <%= render "Shared/Footer" %>
+</main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
   </body>
 </html>

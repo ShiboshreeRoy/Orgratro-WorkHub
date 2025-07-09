@@ -9,6 +9,6 @@ class User < ApplicationRecord
   has_many :withdrawals
 
   def total_earned
-    clicks.count * 0.00001
+    clicks.count * 0.001
   end
 end

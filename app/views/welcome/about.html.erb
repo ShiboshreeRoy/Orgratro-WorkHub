@@ -1,39 +1,143 @@
-<div class="min-h-screen bg-white py-12 px-6 lg:px-16">
-  <div class="max-w-5xl mx-auto">
-    <!-- Header -->
-    <h1 class="text-4xl font-bold text-center text-blue-600 mb-4">
-      About Orgratro WorkHub
-    </h1>
-    <p class="text-lg text-center text-gray-600 mb-10">
-      The central platform where all work, employees, and tasks of Orgratro IT are managed in one smart, organized place.
-    </p>
+<body class="w-full h-full bg-gradient-to-b from-black via-gray-900 to-black text-white font-sans overflow-x-hidden">
 
-    <!-- Main Section -->
-    <div class="bg-blue-50 rounded-xl shadow-lg p-8 space-y-8">
-      <div>
-        <h2 class="text-2xl font-semibold text-blue-700 mb-2">Our Vision</h2>
-        <p class="text-gray-700">
-          Orgratro WorkHub was created to bring clarity, productivity, and control to every layer of IT operations. From assigning tasks to tracking performance, our goal is to make work management seamless and efficient.
+  <!-- Leadership Hierarchy Section -->
+  <section class="py-24 px-4 md:px-10 lg:px-20">
+    <h2 class="text-4xl lg:text-5xl font-extrabold text-center text-blue-400 mb-20 animate-fade-in-down glow">
+      Leadership Hierarchy – Orgratro WorkHub
+    </h2>
+
+    <!-- CEO -->
+    <div class="flex justify-center mb-28 animate-slide-up-slow">
+      <div class="profile-card">
+        <img src="https://img.freepik.com/free-photo/portrait-happy-woman-with-digital-tablet_329181-11681.jpg"
+             alt="Arjun Sinha - CEO"
+             class="rounded-full w-32 h-32 mx-auto mt-6 mb-4 border-4 border-blue-400 shadow-xl shimmer">
+        <h3 class="text-2xl font-bold text-blue-300">Arjun Sinha</h3>
+        <p class="text-gray-400">Chief Executive Officer</p>
+        <p class="text-sm text-gray-300 px-6 pt-3 pb-6">
+          Visionary leader with 12+ years in IT transformation. Promotes a culture of innovation and efficiency.
         </p>
-      </div>
-
-      <div>
-        <h2 class="text-2xl font-semibold text-blue-700 mb-2">Why WorkHub?</h2>
-        <ul class="list-disc list-inside text-gray-700 space-y-1">
-          <li>Smart employee-task-link system</li>
-          <li>Real-time analytics on clicks, views, and engagement</li>
-          <li>Daily task rotation for freshness and fairness</li>
-          <li>Admin and staff management dashboards</li>
-          <li>Accurate balance tracking and performance rewards</li>
-        </ul>
-      </div>
-
-      <div>
-        <h2 class="text-2xl font-semibold text-blue-700 mb-2">Our Mission</h2>
-        <p class="text-gray-700">
-          We believe that a transparent and trackable system can improve employee productivity and company growth. Our mission is to empower Orgratro IT's workforce with tools they trust and enjoy using every day.
-        </p>
+        <a href="#" class="animated-link">LinkedIn Profile</a>
       </div>
     </div>
-  </div>
-</div>
+
+    <!-- Co-Founder & Managing Director -->
+    <div class="grid md:grid-cols-2 gap-10 justify-center items-start mb-28 animate-fade-in-up">
+
+      <!-- Co-Founder -->
+      <div class="flex flex-col items-center">
+        <div class="profile-card">
+          <img src="https://img.freepik.com/free-photo/portrait-happy-woman-with-digital-tablet_329181-11681.jpg"
+               alt="Priya Mehta - Co-Founder"
+               class="rounded-full w-28 h-28 mx-auto mt-6 mb-4 border-4 border-blue-400 shadow-md shimmer">
+          <h3 class="text-xl font-bold text-blue-300">Priya Mehta</h3>
+          <p class="text-gray-400">Co-Founder</p>
+          <p class="text-sm text-gray-300 px-4 pb-4">
+            Architect behind Orgratro's vision. 10+ years of experience in scalable systems and team building.
+          </p>
+          <a href="#" class="animated-link pb-6 block">LinkedIn</a>
+        </div>
+      </div>
+
+      <!-- Managing Director -->
+      <div class="flex flex-col items-center">
+        <div class="profile-card">
+          <img src="https://img.freepik.com/free-photo/portrait-happy-woman-with-digital-tablet_329181-11681.jpg"
+               alt="Neha Rathi - Managing Director"
+               class="rounded-full w-28 h-28 mx-auto mt-6 mb-4 border-4 border-blue-400 shadow-md shimmer">
+          <h3 class="text-xl font-bold text-blue-300">Neha Rathi</h3>
+          <p class="text-gray-400">Managing Director</p>
+          <p class="text-sm text-gray-300 px-4 pb-4">
+            Leads global delivery and operations. Champion of workplace performance and strategic scaling.
+          </p>
+          <a href="#" class="animated-link pb-6 block">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marketing Manager -->
+    <div class="flex justify-center animate-slide-up-slow">
+      <div class="profile-card">
+        <img src="https://img.freepik.com/free-photo/portrait-happy-woman-with-digital-tablet_329181-11681.jpg"
+             alt="Ravi Kapoor - Marketing Manager"
+             class="rounded-full w-28 h-28 mx-auto mt-6 mb-4 border-4 border-blue-400 shadow-md shimmer">
+        <h3 class="text-xl font-bold text-blue-300">Ravi Kapoor</h3>
+        <p class="text-gray-400">Marketing Manager</p>
+        <p class="text-sm text-gray-300 px-4 pb-4">
+          Creative storyteller and growth enabler. Leads our digital footprint and outreach strategy.
+        </p>
+        <a href="#" class="animated-link pb-6 block">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animations & Card Styling -->
+  <style>
+    @keyframes fade-in-down {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slide-up-slow {
+      0% { opacity: 0; transform: translateY(60px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-down {
+      animation: fade-in-down 1s ease-out forwards;
+    }
+    .animate-slide-up-slow {
+      animation: slide-up-slow 1.2s ease-out forwards;
+    }
+
+    .profile-card {
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      border: 1px solid #3b82f6;
+      border-radius: 1.5rem;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
+    }
+
+    .profile-card:hover {
+      transform: scale(1.04);
+      box-shadow: 0 12px 35px rgba(0, 255, 255, 0.3);
+    }
+
+    .animated-link {
+      color: #60a5fa;
+      text-decoration: underline;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .animated-link:hover {
+      color: #93c5fd;
+      text-shadow: 0 0 5px rgba(96, 165, 250, 0.8);
+    }
+
+    .glow {
+      text-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+    }
+
+    .shimmer {
+      animation: shimmer 2.5s infinite;
+      background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,255,255,0.2) 50%, rgba(0,0,0,0) 100%);
+      background-size: 200% 100%;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -100% 0; }
+      100% { background-position: 100% 0; }
+    }
+  </style>
+
+</body>
+<script>
+  // Initialize animations
+  document.addEventListener("DOMContentLoaded", function() {
+    const fadeInElements = document.querySelectorAll('.animate-fade-in-down, .animate-slide-up-slow');
+    fadeInElements.forEach(el => {
+      el.classList.add('animate-fade-in-down');
+    });
+  });
+</script>
