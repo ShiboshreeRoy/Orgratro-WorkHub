@@ -1,45 +1,110 @@
-  <nav class="bg-black px-4 py-3 shadow-lg">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <!-- Logo -->
-      <div class="text-green-500 text-2xl font-bold">
-        <%= image_tag("orgratro_it.png", class: "w-[50px] h-[50px]")%>
-      </div>
-
-      <!-- Desktop Menu -->
-      <div class="hidden md:flex space-x-6">
-        <a href="#" class="text-white hover:text-green-400 transition">Home</a>
-        <a href="#" class="text-white hover:text-green-400 transition">About</a>
-        <a href="#" class="text-white hover:text-green-400 transition">Services</a>
-        <a href="#" class="text-white hover:text-green-400 transition">Contact</a>
-      </div>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
-        <button id="menu-toggle" class="text-green-500 focus:outline-none material-icons">
-          menu
-        </button>
-      </div>
+<nav class="bg-black px-4 py-3 shadow-lg font-sans">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <%= image_tag("orgratro_it.png", class: "w-10 h-10") %>
+      <span class="text-green-500 text-2xl font-bold">Orgratro IT</span>
     </div>
 
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu" class="md:hidden hidden mt-2 space-y-2 px-4">
-      <a href="#" class="block text-white hover:text-green-400">Home</a>
-      <a href="#" class="block text-white hover:text-green-400">About</a>
-      <a href="#" class="block text-white hover:text-green-400">Services</a>
-      <a href="#" class="block text-white hover:text-green-400">Contact</a>
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex space-x-6 items-center">
+      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
+        <i class="fas fa-house"></i> Home
+      </a>
+      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
+        <i class="fas fa-circle-info"></i> About
+      </a>
+      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
+        <i class="fas fa-screwdriver-wrench"></i> Services
+      </a>
+      <a href="#" class="text-white hover:text-green-400 transition duration-300 flex items-center gap-2">
+        <i class="fas fa-envelope"></i> Contact
+      </a>
+
+      <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to admin_dashbord_index_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
+            <i class="fas fa-user-shield"></i> Admin
+          <% end %>
+        <% end %>
+
+      <% elsif %>
+      <%= link_to user_dashbord_index_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        <% end %>
+         <% else %>
+        <%= link_to new_user_session_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
+          <i class="fas fa-sign-in-alt"></i> Login
+        <% end %>
+
+        <%= link_to new_user_registration_path, class: "text-white hover:text-green-400 transition duration-300 flex items-center gap-2" do %>
+          <i class="fas fa-user-plus"></i> Register
+        <% end %>
+      <% end %>
     </div>
-  </nav>
 
-  <script>
-    // Mobile menu toggle script with icon toggle
-    const btn = document.getElementById('menu-toggle');
-    const menu = document.getElementById('mobile-menu');
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden">
+      <button id="menu-toggle" class="text-green-500 text-2xl transition duration-300 focus:outline-none">
+        <i id="menu-icon" class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
 
-    btn.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-      // Toggle icon between 'menu' and 'close'
-      btn.textContent = menu.classList.contains('hidden') ? 'menu' : 'close';
-    });
-  </script>
-</body>
-</html>
+  <!-- Mobile Menu Dropdown -->
+  <div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+    <div class="flex flex-col px-4 py-2 space-y-3">
+      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
+        <i class="fas fa-house"></i> Home
+      </a>
+      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
+        <i class="fas fa-circle-info"></i> About
+      </a>
+      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
+        <i class="fas fa-screwdriver-wrench"></i> Services
+      </a>
+      <a href="#" class="text-white hover:text-green-400 transition flex items-center gap-2">
+        <i class="fas fa-envelope"></i> Contact
+      </a>
+
+      <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to admin_index_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
+            <i class="fas fa-user-shield"></i> Admin
+          <% end %>
+        <% end %>
+
+        <%= link_to user_dashbord_index_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        <% end %>
+      <% else %>
+        <%= link_to new_user_session_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
+          <i class="fas fa-sign-in-alt"></i> Login
+        <% end %>
+
+        <%= link_to new_user_registration_path, class: "text-white hover:text-green-400 transition flex items-center gap-2" do %>
+          <i class="fas fa-user-plus"></i> Register
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const icon = document.getElementById('menu-icon');
+
+  btn.addEventListener('click', () => {
+    const isOpen = menu.classList.contains('max-h-0');
+    if (isOpen) {
+      menu.classList.remove('max-h-0');
+      menu.classList.add('max-h-[500px]');
+    } else {
+      menu.classList.remove('max-h-[500px]');
+      menu.classList.add('max-h-0');
+    }
+    icon.classList.toggle('fa-bars');
+    icon.classList.toggle('fa-times');
+  });
+</script>

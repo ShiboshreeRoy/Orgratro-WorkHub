@@ -1,0 +1,91 @@
+<body class="bg-black w-full h-full ">
+  <div class="min-h-screen flex bg-black text-white font-sans">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-900 shadow-lg hidden md:block">
+    <div class="p-6">
+      <h1 class="text-2xl font-bold text-blue-400 mb-8">
+        <i class="fas fa-network-wired mr-2"></i>Orgratro IT
+      </h1>
+      <nav class="space-y-4 text-sm">
+        <span class="block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition">
+            <i class="fas fa-user-circle mr-2"></i> Hello 
+                <%= current_user.email.split("@").first.capitalize %> !
+        </span>
+
+        <%= link_to user_dashbord_index_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+          <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+        <% end %>
+
+        <%= link_to root_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+          <i class="fas fa-graduation-cap mr-2"></i> Learn & Earn
+        <% end %>
+
+        <%= link_to root_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+          <i class="fas fa-tasks mr-2"></i> Complete Task & Earn
+        <% end %>
+
+        <%= link_to root_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+          <i class="fas fa-wallet mr-2"></i> Withdraw
+        <% end %>
+
+        <%= link_to edit_user_registration_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+          <i class="fas fa-cog mr-2"></i> Settings
+        <% end %>
+
+        <%= link_to destroy_user_session_path, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are You Sure!" }, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        <% end %>
+
+       
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <h2 class="text-3xl font-bold text-blue-400 mb-6">
+      <i class="fas fa-user-circle mr-2"></i>Your Dashboard
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-blue-500 transition">
+        <p class="text-sm text-gray-400">
+          <i class="fas fa-mouse-pointer mr-1"></i> Total Clicks
+        </p>
+        <p class="text-2xl font-semibold text-blue-300"><%= @total_clicks %></p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-blue-500 transition">
+        <p class="text-sm text-gray-400">
+          <i class="fas fa-coins mr-1"></i> Total Earned
+        </p>
+        <p class="text-2xl font-semibold text-blue-300"><%= number_with_precision(@total_earned, precision: 12) %></p>
+      </div>
+      <div class="bg-gray-800 p-6 rounded-lg shadow hover:shadow-blue-500 transition">
+        <p class="text-sm text-gray-400">
+          <i class="fas fa-wallet mr-1"></i> Current Balance
+        </p>
+        <p class="text-2xl font-semibold text-blue-300"><%= number_with_precision(current_user.balance, precision: 12) %></p>
+      </div>
+    </div>
+
+    <div class="bg-gray-900 p-6 rounded-lg shadow">
+      <h3 class="text-2xl font-semibold text-blue-400 mb-4">
+        <i class="fas fa-money-bill-wave mr-2"></i>Your Withdrawals
+      </h3>
+      <div class="space-y-2">
+        <% @withdrawals.each do |wd| %>
+          <div class="flex justify-between items-center bg-gray-800 p-3 rounded-md">
+            <span class="text-blue-300 font-medium">
+              <i class="fas fa-dollar-sign mr-1"></i><%= number_with_precision(wd.amount, precision: 2) %>
+            </span>
+            <span class="text-sm text-gray-400">
+              <i class="fas fa-info-circle mr-1"></i><%= wd.status.capitalize %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>

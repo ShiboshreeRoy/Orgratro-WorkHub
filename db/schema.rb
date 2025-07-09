@@ -10,9 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_08_192805) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_09_111059) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "clicks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "link_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["link_id"], name: "index_clicks_on_link_id"
+    t.index ["user_id"], name: "index_clicks_on_user_id"
+  end
+
+  create_table "links", force: :cascade do |t|
+    t.string "url"
+    t.integer "total_clicks"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -23,7 +40,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_08_192805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role"
+    t.decimal "balance", precision: 24, scale: 12, default: "0.0"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  create_table "withdrawals", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "amount"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_withdrawals_on_user_id"
+  end
+
+  add_foreign_key "clicks", "links"
+  add_foreign_key "clicks", "users"
+  add_foreign_key "withdrawals", "users"
 end

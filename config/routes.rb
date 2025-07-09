@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
+ 
+  get "user_dashbord/index"
+  resources :withdrawals
+  resources :clicks
+  resources :links
   
   devise_for :users
   
   resources :admin , only: [:index, :create, :edit, :update, :show, :destory], controller: 'admin'
+  resources :admin_dashbord, only: [:index]
 
  resources :welcome do
   collection do

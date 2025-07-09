@@ -1,21 +1,48 @@
-<footer class="bg-black mt-12 py-6 text-green-400 text-center font-mono tracking-wide relative">
-  <div class="flex justify-center space-x-8">
-    <a href="#" class="hover:text-green-600 transition flicker-link">Privacy Policy</a>
-    <a href="#" class="hover:text-green-600 transition flicker-link">Terms of Service</a>
-    <a href="#" class="hover:text-green-600 transition flicker-link">Contact</a>
+<!-- Font Awesome CDN -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  integrity="sha512-K4i6vjPmOzkWFnImGu0cw1RvjTuT+rEzpP+9SbwFjM1V+FZprbJ4F1PVQ8gU6flE7W1FgKaX/nW1ptQkUPzHxA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<!-- Footer Section -->
+<footer class="bg-black mt-12 py-8 text-blue-400 text-center font-mono tracking-wide relative border-t border-blue-900 shadow-inner shadow-blue-800/30">
+  <div class="flex flex-wrap justify-center gap-8 mb-4 text-lg">
+    <a href="#" class="hover:text-cyan-400 transition flicker-link flex items-center gap-2">
+      <i class="fas fa-user-secret"></i> Privacy Policy
+    </a>
+    <a href="#" class="hover:text-cyan-400 transition flicker-link flex items-center gap-2">
+      <i class="fas fa-gavel"></i> Terms of Service
+    </a>
+    <a href="#" class="hover:text-cyan-400 transition flicker-link flex items-center gap-2">
+      <i class="fas fa-envelope"></i> Contact
+    </a>
+    <a href="https://facebook.com" target="_blank" class="hover:text-blue-500 transition flicker-link">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://twitter.com" target="_blank" class="hover:text-sky-400 transition flicker-link">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a href="https://linkedin.com" target="_blank" class="hover:text-blue-300 transition flicker-link">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
   </div>
-  <p class="mt-4 text-sm opacity-75 flicker-link">&copy; 2025 Orgatro It. All rights reserved.</p>
+  <p class="text-sm opacity-75 flicker-link tracking-widest">
+    &copy; 2025 <span class="text-blue-500 font-bold">Orgratro IT</span>. All rights reserved.
+  </p>
 </footer>
 
+<!-- Flicker Animation -->
 <style>
-  /* Flicker glow for footer links */
   @keyframes flickerFooter {
     0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
       opacity: 1;
-      text-shadow: 0 0 5px #39ff14;
+      text-shadow: 0 0 6px #00f0ff, 0 0 12px #0ff;
     }
     20%, 22%, 24%, 55% {
-      opacity: 0.5;
+      opacity: 0.6;
       text-shadow: none;
     }
   }
