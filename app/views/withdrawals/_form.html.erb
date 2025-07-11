@@ -1,32 +1,12 @@
-<%= form_with(model: withdrawal, class: "contents") do |form| %>
-  <% if withdrawal.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(withdrawal.errors.count, "error") %> prohibited this withdrawal from being saved:</h2>
+<h1 class="text-2xl font-bold mb-6">Request Withdrawal</h1>
 
-      <ul class="list-disc ml-6">
-        <% withdrawal.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": withdrawal.errors[:user_id].none?, "border-red-400 focus:outline-red-600": withdrawal.errors[:user_id].any?}] %>
+<%= form_with model: @withdrawal, class: "space-y-4", local: true do |form| %>
+  <div>
+    <%= form.label :amount, "Amount to Withdraw", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.number_field :amount, step: 0.0000000001, min: 0, max: current_user.balance, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :amount %>
-    <%= form.text_field :amount, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": withdrawal.errors[:amount].none?, "border-red-400 focus:outline-red-600": withdrawal.errors[:amount].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :status %>
-    <%= form.text_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": withdrawal.errors[:status].none?, "border-red-400 focus:outline-red-600": withdrawal.errors[:status].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div>
+    <%= form.submit "Request Withdrawal", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
   </div>
 <% end %>

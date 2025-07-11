@@ -25,6 +25,13 @@
         <%= link_to new_link_path, class: "flex items-center gap-3 hover:text-blue-400 transition" do %>
           <i class="fas fa-link"></i> Create Short Link
         <% end %>
+
+
+        <%= link_to withdrawals_path, class: "flex items-center gap-3 hover:text-blue-400 transition" do %>
+          <i class="fa fa-check" aria-hidden="true"></i> Widthdrawal Requests
+        <% end %>
+
+
         <a href="#" class="flex items-center gap-3 hover:text-blue-400 transition">
           <i class="fas fa-bell"></i> Notifications
         </a>
@@ -33,11 +40,12 @@
           <i class="fas fa-cogs"></i> Settings
         </a>
 
+       
         <a href="#" class="flex items-center gap-3 hover:text-blue-400 transition">
           <i class="fas fa-chart-bar"></i> Reports
         </a>
 
-        <%= link_to destroy_user_session_path, method: :delete, class: "flex items-center gap-3 hover:text-red-400 transition" do %>
+        <%= link_to destroy_user_session_path, method: :delete, data: {turbo_method: :delete, turbo_confirm: "Are You Sure..!"}, class: "flex items-center gap-3 hover:text-red-400 transition" do %>
           <i class="fas fa-sign-out-alt"></i> Logout
         <% end %>
       </nav>
@@ -103,3 +111,7 @@
     </main>
   </div>
 </body>
+
+
+
+ 

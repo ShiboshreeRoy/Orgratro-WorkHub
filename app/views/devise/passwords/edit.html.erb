@@ -1,0 +1,36 @@
+<body class="bg-black text-white font-sans antialiased">
+  <div class="flex justify-center items-center min-h-screen bg-black dark:bg-gray-900 px-4 py-12">
+  <div class="w-full max-w-md bg-gray-950 dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700">
+    <h2 class="text-3xl font-extrabold text-center text-blue-400 mb-6">Change Your Password</h2>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= f.hidden_field :reset_password_token %>
+
+      <div class="mb-5">
+        <%= f.label :password, "New password", class: "block text-sm font-semibold text-gray-300 mb-1" %>
+        <% if @minimum_password_length %>
+          <p class="text-xs text-gray-400 mb-1">(<%= @minimum_password_length %> characters minimum)</p>
+        <% end %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", required: true,
+            class: "w-full rounded-lg border border-gray-700 bg-gray-800 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+
+      <div class="mb-5">
+        <%= f.label :password_confirmation, "Confirm new password", class: "block text-sm font-semibold text-gray-300 mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true,
+            class: "w-full rounded-lg border border-gray-700 bg-gray-800 text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.submit "Change my password",
+            class: "w-full py-3 px-4 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold rounded-lg shadow transition duration-150 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-400" %>
+      </div>
+    <% end %>
+
+    <div class="text-center text-sm text-gray-400">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>
+</body>

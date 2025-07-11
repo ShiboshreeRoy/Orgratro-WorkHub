@@ -1,70 +1,45 @@
 class WithdrawalsController < ApplicationController
-  before_action :set_withdrawal, only: %i[ show edit update destroy ]
+  before_action :set_withdrawal, only: %i[ show edit update  ]
 
   # GET /withdrawals or /withdrawals.json
-  def index
-    @withdrawals = Withdrawal.all
-  end
+ def index
+  @withdrawals = current_user.admin? ? Withdrawal.all.includes(:user) : current_user.withdrawals
+end
 
-  # GET /withdrawals/1 or /withdrawals/1.json
-  def show
-  end
+def new
+  @withdrawal = Withdrawal.new
+end
 
-  # GET /withdrawals/new
-  def new
-    @withdrawal = Withdrawal.new
-  end
-
-  # GET /withdrawals/1/edit
-  def edit
-  end
-
-  # POST /withdrawals or /withdrawals.json
-  def create
-    @withdrawal = Withdrawal.new(withdrawal_params)
-
-    respond_to do |format|
-      if @withdrawal.save
-        format.html { redirect_to @withdrawal, notice: "Withdrawal was successfully created." }
-        format.json { render :show, status: :created, location: @withdrawal }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @withdrawal.errors, status: :unprocessable_entity }
-      end
+def create
+  @withdrawal = current_user.withdrawals.build(withdrawal_params)
+  if @withdrawal.amount <= current_user.balance
+    @withdrawal.status = "pending"
+    current_user.balance -= @withdrawal.amount
+    Withdrawal.transaction do
+      @withdrawal.save!
+      current_user.save!
     end
+    redirect_to withdrawals_path, notice: "Withdrawal requested."
+  else
+    flash.now[:alert] = "Insufficient balance."
+    render :new
   end
+end
 
-  # PATCH/PUT /withdrawals/1 or /withdrawals/1.json
-  def update
-    respond_to do |format|
-      if @withdrawal.update(withdrawal_params)
-        format.html { redirect_to @withdrawal, notice: "Withdrawal was successfully updated." }
-        format.json { render :show, status: :ok, location: @withdrawal }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @withdrawal.errors, status: :unprocessable_entity }
-      end
-    end
+def update
+  @withdrawal = Withdrawal.find(params[:id])
+  if current_user.admin? && @withdrawal.status == "pending"
+    @withdrawal.update(status: "approved")
+    redirect_to withdrawals_path, notice: "Withdrawal approved."
+  else
+    redirect_to withdrawals_path, alert: "Action not allowed."
   end
+end
 
-  # DELETE /withdrawals/1 or /withdrawals/1.json
-  def destroy
-    @withdrawal.destroy!
+private
 
-    respond_to do |format|
-      format.html { redirect_to withdrawals_path, status: :see_other, notice: "Withdrawal was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+def withdrawal_params
+  params.require(:withdrawal).permit(:amount)
+end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_withdrawal
-      @withdrawal = Withdrawal.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def withdrawal_params
-      params.require(:withdrawal).permit(:user_id, :amount, :status)
-    end
 end
