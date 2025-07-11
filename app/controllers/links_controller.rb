@@ -1,4 +1,8 @@
 class LinksController < ApplicationController
+  before_action :authenticate_user!
+  # Ensure user is admin for create, update, destroy actions
+  #before_action :authorize_admin!, only: %i[ new create edit update destroy ]
+  # Set link for show, edit, update, destroy actions
   before_action :set_link, only: %i[ show edit update destroy ]
 
   # GET /links or /links.json
@@ -20,7 +24,7 @@ class LinksController < ApplicationController
   end
 
   # POST /links or /links.json
-  def create
+  '''def create
     @link = Link.new(link_params)
 
     respond_to do |format|
@@ -33,6 +37,39 @@ class LinksController < ApplicationController
       end
     end
   end
+'''
+
+def create
+  @link = Link.new(link_params)
+  @link.user = current_user  # If links are created by logged-in admin/staff
+
+  if @link.save
+    redirect_to links_path, notice: "Link was successfully created."
+  else
+    render :new, status: :unprocessable_entity
+  end
+end
+
+# click action to handle link clicks
+  # POST /click_link/:id
+  # This action records a click on a link by the current user
+ def click
+    @link = Link.find(params[:id])
+
+    # Prevent duplicate clicks in 24 hours
+    already_clicked = Click.exists?(user: current_user, link: @link, created_at: 24.hours.ago..Time.now)
+
+    if already_clicked
+      redirect_to links_path, alert: "You already clicked this link today."
+    else
+      Click.create!(user: current_user, link: @link)
+      @link.increment!(:total_clicks)
+      current_user.increment!(:balance, 0.000333333333)
+      redirect_to links_path, notice: "Click recorded. You earned $0.0.000333333333!"
+    end
+  end
+
+  
 
   # PATCH/PUT /links/1 or /links/1.json
   def update

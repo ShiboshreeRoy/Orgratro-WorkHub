@@ -20,6 +20,7 @@ class ClicksController < ApplicationController
   end
 
   # POST /clicks or /clicks.json
+ '''
   def create
     @click = Click.new(click_params)
 
@@ -33,7 +34,26 @@ class ClicksController < ApplicationController
       end
     end
   end
+'''
 
+  def create
+    @link = Link.find(params[:id])
+
+    already_clicked = Click.exists?(
+      user: current_user,
+      link: @link,
+      created_at: 24.hours.ago..Time.now
+    )
+
+    if already_clicked
+      redirect_to links_path, alert: "You already clicked this link today."
+    else
+      Click.create!(user: current_user, link: @link)
+      @link.increment!(:total_clicks)
+      current_user.increment!(:balance, 0.0000000001)
+      redirect_to links_path, notice: "Click recorded. You earned $0.0000000001!"
+    end
+  end
   # PATCH/PUT /clicks/1 or /clicks/1.json
   def update
     respond_to do |format|

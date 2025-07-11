@@ -1,32 +1,29 @@
-<%= form_with(model: link, class: "contents") do |form| %>
-  <% if link.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(link.errors.count, "error") %> prohibited this link from being saved:</h2>
+<body class="bg-black text-blue-400 font-sans p-4">
+  <div class="w-full max-w-lg bg-gray-900 rounded-2xl shadow-2xl p-8">
+    <h1 class="text-3xl font-bold text-center text-blue-400 mb-6">Submit a New Link</h1>
 
-      <ul class="list-disc ml-6">
-        <% link.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <%= form_with(model: link, class: "space-y-6") do |form| %>
+      <% if link.errors.any? %>
+        <div id="error_explanation" class="bg-red-100 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-md">
+          <h2 class="font-semibold mb-2"><%= pluralize(link.errors.count, "error") %> prohibited this link from being saved:</h2>
+          <ul class="list-disc ml-5 space-y-1">
+            <% link.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div class="my-5">
-    <%= form.label :url %>
-    <%= form.text_field :url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": link.errors[:url].none?, "border-red-400 focus:outline-red-600": link.errors[:url].any?}] %>
+      <!-- URL Field -->
+      <div>
+        <%= form.label :url, class: "block text-sm font-medium text-blue-300 mb-1" %>
+        <%= form.text_field :url, class: "w-full rounded-lg border px-4 py-2 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all #{link.errors[:url].any? ? 'border-red-500' : 'border-gray-600'}" %>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end">
+        <%= form.submit "Submit", class: "bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200 shadow-md" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="my-5">
-    <%= form.label :total_clicks %>
-    <%= form.number_field :total_clicks, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": link.errors[:total_clicks].none?, "border-red-400 focus:outline-red-600": link.errors[:total_clicks].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.number_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": link.errors[:user_id].none?, "border-red-400 focus:outline-red-600": link.errors[:user_id].any?}] %>
-  </div>
-
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-  </div>
-<% end %>
+</body>

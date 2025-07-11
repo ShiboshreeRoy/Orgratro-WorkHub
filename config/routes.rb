@@ -3,7 +3,13 @@ Rails.application.routes.draw do
   get "user_dashbord/index"
   resources :withdrawals
   resources :clicks
-  resources :links
+
+  resources :links 
+  post "click_link/:id", to: "clicks#create", as: "click_link"
+  #post 'claim_reward/:id', to: 'links#claim_reward', as: :claim_reward
+
+
+
   
   devise_for :users
   
