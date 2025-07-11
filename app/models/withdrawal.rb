@@ -1,17 +1,14 @@
 class Withdrawal < ApplicationRecord
   belongs_to :user
 
-  MAX_WITHDRAWAL_AMOUNT = 500
+validate :amount_within_balance
+#validates :amount, numericality: { greater_than_or_equal_to: 100.00 }
+#validates :status, inclusion: { in: %w[pending approved rejected] }
 
-  validates :amount, presence: true, numericality: { greater_than: 0, less_than_or_equal_to: MAX_WITHDRAWAL_AMOUNT }
-
-  validate :user_has_sufficient_balance
-
-  private
-
-  def user_has_sufficient_balance
-    if user.balance < amount
-      errors.add(:amount, "exceeds your available balance")
-    end
+def amount_within_balance
+  if amount.present? && amount > user.balance
+    errors.add(:amount, "cannot exceed your current balance ($#{user.balance})")
   end
+end 
+
 end

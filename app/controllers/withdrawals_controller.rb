@@ -26,6 +26,9 @@ def create
   end
 end
 
+
+
+
 def update
   @withdrawal = Withdrawal.find(params[:id])
   if current_user.admin? && @withdrawal.status == "pending"

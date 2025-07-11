@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   collection do
     get :about
     get :service
+    get :contact_us
   end
 end
 

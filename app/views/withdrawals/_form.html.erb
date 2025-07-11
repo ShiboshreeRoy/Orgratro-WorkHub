@@ -1,12 +1,53 @@
-<h1 class="text-2xl font-bold mb-6">Request Withdrawal</h1>
+<body>
 
-<%= form_with model: @withdrawal, class: "space-y-4", local: true do |form| %>
-  <div>
-    <%= form.label :amount, "Amount to Withdraw", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.number_field :amount, step: 0.0000000001, min: 0, max: current_user.balance, class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" %>
+  <div class="min-h-screen flex items-center justify-center px-4 py-10 ">
+
+    <div class="w-full max-w-md bg-gray-800 rounded-3xl shadow-2xl p-8">
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-white drop-shadow-lg mb-8 sm:mb-10 select-none">
+        💸 Request Withdrawal
+      </h1>
+
+      <% if current_user.balance < 100.00 %>
+        <div class="bg-red-700/20 border border-red-600 text-red-300 font-semibold text-center p-5 rounded-2xl shadow-inner mb-8 text-sm sm:text-base">
+          You need at least <span class="font-bold">$100.00</span> to request a withdrawal.<br>
+          Current Balance: <span class="font-mono text-white">$<%= number_with_precision(current_user.balance, precision: 2) %></span>
+        </div>
+      <% else %>
+
+        <% max_withdrawal = current_user.balance %>
+
+        <%= form_with model: @withdrawal, local: true, class: "space-y-6" do |form| %>
+
+          <!-- Amount Input -->
+          <div>
+            <label for="withdrawal_amount" class="block text-white font-semibold mb-2 text-lg sm:text-xl tracking-wide">
+              Amount
+            </label>
+            <%= form.number_field :amount,
+                step: 0.01,
+                min: 100.00,
+                max: max_withdrawal,
+                inputmode: "decimal",
+                pattern: "[0-9]+(\\.[0-9]+)?",
+                placeholder: "Enter amount to withdraw",
+                class: "w-full px-4 py-3 rounded-2xl bg-gray-700 bg-opacity-30 text-white placeholder-gray-400 border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-600 focus:outline-none shadow-lg transition-all duration-300" %>
+            <p class="mt-1 text-sm sm:text-base text-gray-400 font-medium tracking-wide">
+              Minimum: <span class="text-blue-400 font-semibold">$100.00</span> |
+              Maximum: <span class="text-blue-400 font-semibold">$<%= number_with_precision(max_withdrawal, precision: 2) %></span>
+            </p>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center">
+            <%= form.submit "🚀 Request Withdrawal", class: "inline-block bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold px-8 sm:px-10 py-3 sm:py-4 rounded-3xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition duration-300 select-none w-full sm:w-auto" %>
+          </div>
+
+        <% end %>
+      <% end %>
+
+    </div>
+
   </div>
 
-  <div>
-    <%= form.submit "Request Withdrawal", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
-  </div>
-<% end %>
+</body>
