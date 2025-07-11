@@ -5,7 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   enum role: { standard: 1, admin: 2 }
 
-  has_many :clicks
+  has_many :clicks, dependent: :destroy
+  has_many :links, dependent: :destroy
   has_many :withdrawals
 
   def total_earned
