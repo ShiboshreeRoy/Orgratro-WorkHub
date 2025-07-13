@@ -27,7 +27,9 @@
         <%= link_to new_withdrawal_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
           <i class="fas fa-wallet mr-2"></i> Withdraw
         <% end %>
-
+        <%=link_to  notifications_path,class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
+           <i class="fas fa-bell"></i> Checked Notifications
+        <% end %>
         <%= link_to edit_user_registration_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
           <i class="fas fa-cog mr-2"></i> Settings
         <% end %>

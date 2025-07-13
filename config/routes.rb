@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :notifications, only: [:new, :create]
+  end
   
  
   get "user_dashbord/index"
   resources :withdrawals
   resources :clicks
+  resources :notifications, only: [:index,:destroy]
+
   resources :contact_messages, only: [:new, :create, :index, :show, :destroy]
 
   resources :links 
