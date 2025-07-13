@@ -71,14 +71,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_023318) do
     t.index ["user_id"], name: "index_learn_and_earns_on_user_id"
   end
 
-  create_table "links", force: :cascade do |t|
-    t.string "url"
-    t.integer "total_clicks"
-    t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "notifications", force: :cascade do |t|
     t.string "title"
     t.text "message"
@@ -114,7 +106,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_023318) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "clicks", "links"
   add_foreign_key "clicks", "users"
   add_foreign_key "learn_and_earns", "users"
   add_foreign_key "notifications", "users"
