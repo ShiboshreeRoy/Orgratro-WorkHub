@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
+  
  
   get "user_dashbord/index"
   resources :withdrawals
   resources :clicks
+  resources :contact_messages, only: [:new, :create, :index, :show, :destroy]
 
   resources :links 
   post "click_link/:id", to: "clicks#create", as: "click_link"
