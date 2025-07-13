@@ -1,6 +1,16 @@
+<style>
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.blinks {
+  animation: blink 1s infinite;
+}
+</style>
+
 <nav class="bg-black text-white shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16 items-center">
+    <div class="flex justify-between h-16">
       <!-- Logo -->
       <div class="flex-shrink-0 flex items-center gap-2">
         <%= image_tag("orgratro_it.png", class: "w-[35px] h-[35px]") %>
@@ -11,49 +21,53 @@
       <div class="hidden md:flex md:items-center space-x-8">
         <%= link_to "Home", root_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
         <%= link_to "Services", service_welcome_index_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
+              
         <%= link_to "About", about_welcome_index_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
         <%= link_to "Contact", new_contact_message_path, class: "text-gray-300 hover:text-indigo-400 font-medium" %>
+
+        <!-- Dropdown -->
+        <div class="relative">
+          <button id="accountDropdownBtn" class="text-gray-300 hover:text-indigo-400 font-medium focus:outline-none flex items-center gap-1">
+            Account
+            <svg class="w-4 h-4 transition-transform duration-300" id="arrowIcon" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div id="accountDropdown" class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg transition-all duration-200 transform scale-95 opacity-0 hidden origin-top z-50">
+            <% if user_signed_in? %>
+              <%= link_to "Dashboard", user_dashbord_index_path, class: "block px-4 py-2 text-gray-700 hover:bg-indigo-100" %>
+              <% if current_user.admin? %>
+                <%= link_to "Admin", admin_dashbord_index_path, class: "block px-4 py-2 text-gray-700 hover:bg-indigo-100" %>
+              <% end %>
+            <% else %>
+              <%= link_to "Intern Login", new_user_session_path, class: "block px-4 py-2 text-gray-700 hover:bg-indigo-100" %>
+            <% end %>
+          </div>
+        </div>
       </div>
 
-      <!-- CTA & Account Dropdown -->
-      <div class="hidden md:flex items-center space-x-6">
-        <% if user_signed_in? %>
-          <!-- Send Message Button -->
-          <%= link_to new_contact_message_path, class: "inline-flex items-center gap-2 px-6 py-3 text-white bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-full shadow-lg transform active:scale-95 transition-all duration-200 hover:shadow-xl hover:ring-4 hover:ring-indigo-300/50" do %>
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 12h18M3 12l6-6m-6 6l6 6" />
-            </svg>
-            <span class="text-sm font-semibold tracking-wide">Send Message</span>
-          <% end %>
+      <!-- CTA -->
+      <div class="hidden md:flex items-center">
+      <% if user_signed_in? %>
+       <%= link_to new_contact_message_path, class: "inline-flex items-center gap-2 px-6 py-3 text-white bg-gradient-to-r blink from-indigo-600 to-indigo-500 rounded-full shadow-lg transform active:scale-95 transition-all duration-200 hover:shadow-xl hover:ring-4 hover:ring-indigo-300/50" do %>
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18M3 12l6-6m-6 6l6 6" />
+        </svg>
+        <span class="text-sm font-semibold tracking-wide">Send Message</span>
+       <% end %>
 
-          <!-- Account Dropdown -->
-          <div class="relative ml-4">
-            <button id="accountDropdownBtn" type="button" class="flex items-center gap-2 text-indigo-400 hover:text-indigo-600 font-semibold focus:outline-none">
-              Account
-              <svg id="arrowIcon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div id="accountDropdown" class="hidden absolute right-0 mt-2 w-48 bg-black border border-indigo-600 rounded-md shadow-lg opacity-0 scale-95 transition-all duration-200 origin-top-right z-50">
-              <%= link_to "Profile", edit_user_registration_path, class: "block px-4 py-2 text-indigo-300 hover:bg-indigo-600 hover:text-white rounded-md" %>
-              <% if current_user.admin? %>
-                <%= link_to "Admin Dashboard", admin_dashbord_index_path, class: "block px-4 py-2 text-indigo-300 hover:bg-indigo-600 hover:text-white rounded-md" %>
-              <% else %>
-                <%= link_to "User Dashboard", user_dashbord_index_path, class: "block px-4 py-2 text-indigo-300 hover:bg-indigo-600 hover:text-white rounded-md" %>
-              <% end %>
-              <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "block px-4 py-2 text-indigo-300 hover:bg-indigo-600 hover:text-white rounded-md" %>
-            </div>
-          </div>
-        <% else %>
-          <%= link_to "Join", new_user_registration_path, class: "px-4 py-2 rounded-lg bg-indigo-600 text-white shadow-lg font-semibold hover:bg-indigo-700 transition duration-200" %>
-        <% end %>
+      <% else %>
+      <%= link_to "Join", new_user_registration_path, class: "px-4 py-2 rounded-lg bg-indigo-600 text-white shadow-lg font-semibold hover:bg-indigo-700 transition duration-200" %>
+      <% end %>
       </div>
 
       <!-- Mobile Menu Toggle -->
       <div class="flex items-center md:hidden">
-        <button id="mobile-menu-btn" class="text-white focus:outline-none" aria-label="Toggle mobile menu">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 6h16M4 12h16M4 18h16" />
+        <button id="mobile-menu-btn" class="text-white focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
       </div>
@@ -61,21 +75,20 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2 transition-all duration-300 ease-in-out bg-black border-t border-indigo-600">
+  <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2 transition-all duration-300 ease-in-out">
     <%= link_to "Home", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
-    <%= link_to "Services", service_welcome_index_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
-    <%= link_to "About", about_welcome_index_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
-    <%= link_to "Contact", new_contact_message_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
+    <%= link_to "Features", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
+    <%= link_to "Pricing", root_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
+    <%= link_to "Contact",  new_contact_message_path, class: "block py-2 text-gray-300 hover:text-indigo-400" %>
 
-    <div class="border-t border-indigo-600 pt-2">
-      <span class="block text-gray-500 text-sm font-semibold mb-2">Account</span>
+    <div class="border-t pt-2">
+      <span class="block text-gray-500 text-sm font-semibold">Account</span>
       <% if user_signed_in? %>
         <% if current_user.admin? %>
           <%= link_to "Admin Dashboard", admin_dashbord_index_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
         <% else %>
           <%= link_to "User Dashboard", user_dashbord_index_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
         <% end %>
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
       <% else %>
         <%= link_to "Advertiser Login", root_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
         <%= link_to "Intern/Publisher Login", new_user_session_path, class: "block py-2 pl-4 text-gray-300 hover:text-indigo-400" %>
@@ -88,7 +101,6 @@
 
 <script>
   document.addEventListener('turbo:load', () => {
-    // Account dropdown toggle
     const accountBtn = document.getElementById('accountDropdownBtn');
     const accountMenu = document.getElementById('accountDropdown');
     const arrowIcon = document.getElementById('arrowIcon');
