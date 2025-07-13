@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_13_023318) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_13_094425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -71,6 +71,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_023318) do
     t.index ["user_id"], name: "index_learn_and_earns_on_user_id"
   end
 
+  create_table "links", force: :cascade do |t|
+    t.string "title"
+    t.string "url", null: false
+    t.bigint "user_id", null: false
+    t.integer "clicks_count", default: 0
+    t.decimal "earnings", precision: 20, scale: 10, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["url"], name: "index_links_on_url", unique: true
+    t.index ["user_id"], name: "index_links_on_user_id"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.string "title"
     t.text "message"
@@ -106,8 +118,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_023318) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "clicks", "links"
   add_foreign_key "clicks", "users"
   add_foreign_key "learn_and_earns", "users"
+  add_foreign_key "links", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "withdrawals", "users"
 end
