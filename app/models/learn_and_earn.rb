@@ -1,6 +1,7 @@
 class LearnAndEarn < ApplicationRecord
   belongs_to :user
   has_many :clicks, dependent: :destroy
+
   attr_accessor :skip_proof_validation
   validates :link, presence: true
   validates :social_post, presence: true

@@ -25,7 +25,9 @@ Rails.application.routes.draw do
 
 
   
-  devise_for :users, controllers: { registrations: 'users/registrations' }
+  devise_for :users, controllers: { 
+    registrations: 'users/registrations' 
+  }
 
   
   resources :admin , only: [:index, :create, :edit, :update, :show, :destory], controller: 'admin'
