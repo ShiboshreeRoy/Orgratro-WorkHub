@@ -1,0 +1,14 @@
+<div class="min-h-screen flex justify-center items-center bg-black text-blue-100 py-12 px-6">
+  <div class="max-w-4xl mx-auto">
+  <% if current_user.admin? %>
+    <h1 class="text-4xl font-bold text-blue-400 mb-8 text-center">Add Learn & Earn Entry</h1>
+  <% end %>
+    <%= render 'form', learn_and_earn: @learn_and_earn %>
+
+    <div class="text-center mt-8">
+      <%= link_to '← Back to Entries',
+                  learn_and_earns_path,
+                  class: "inline-block text-blue-300 hover:text-blue-100 hover:underline transition duration-150" %>
+    </div>
+  </div>
+</div>

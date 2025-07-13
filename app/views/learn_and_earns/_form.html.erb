@@ -1,0 +1,71 @@
+<body class="bg-black text-blue-300 min-h-screen">
+  <div class="flex justify-center items-center min-h-screen p-6">
+    <%= form_with(model: learn_and_earn, local: true, class: "w-full max-w-3xl bg-black text-blue-100 p-8 rounded-2xl shadow-2xl") do |form| %>
+      <h2 class="text-3xl font-extrabold text-blue-400 mb-8 text-center">
+        <%= learn_and_earn.new_record? ? "Submit Learn & Earn Entry" : "Edit Learn & Earn Entry" %>
+      </h2>
+
+      <% if learn_and_earn.errors.any? %>
+        <div class="mb-6 bg-red-900/20 border border-red-400 text-red-300 p-4 rounded-md">
+          <h3 class="font-semibold mb-2"><%= pluralize(learn_and_earn.errors.count, "error") %> prevented submission:</h3>
+          <ul class="list-disc list-inside text-sm">
+            <% learn_and_earn.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if current_user.admin? %>
+        <!-- Link -->
+        <div class="mb-6">
+          <%= form.label :link, "Referral Link", class: "block text-sm font-medium text-blue-200 mb-1" %>
+          <%= form.text_field :link, class: "w-full p-3 bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm" %>
+        </div>
+
+        <!-- Social Post -->
+        <div class="mb-6">
+          <%= form.label :social_post, "Social Media Post (URL or text)", class: "block text-sm font-medium text-blue-200 mb-1" %>
+          <%= form.text_area :social_post, rows: 4, class: "w-full p-3 bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm resize-none" %>
+        </div>
+      <% else %>
+        <!-- Link (read-only for user) -->
+        <div class="mb-6">
+          <%= form.label :link, "Referral Link", class: "block text-sm font-medium text-blue-200 mb-1" %>
+          <%= form.text_field :link, class: "w-full p-3 cursor-not-allowed select-none bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm", disabled: true %>
+        </div>
+
+        <!-- Social Post (read-only for user) -->
+        <div class="mb-6">
+          <%= form.label :social_post, "Social Media Post", class: "block text-sm font-medium text-blue-200 mb-1" %>
+          <%= form.text_area :social_post, rows: 4, class: "w-full p-3 cursor-not-allowed select-none bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm resize-none", disabled: true %>
+        </div>
+      <% end %>
+
+      <!-- Proof -->
+      <div class="mb-6">
+        <%= form.label :proof, "Proof (URL or Screenshot)", class: "block text-sm font-medium text-blue-200 mb-1" %>
+        <%= form.text_field :proof, class: "w-full p-3 bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm" %>
+      </div>
+
+      <!-- Status (admin only) -->
+      <% if current_user.admin? %>
+        <div class="mb-6">
+          <%= form.label :status, "Status", class: "block text-sm font-medium text-blue-200 mb-1" %>
+          <%= form.select :status, options_for_select([['Pending', 'pending'], ['Approved', 'approved'], ['Rejected', 'rejected']], learn_and_earn.status), {}, class: "w-full p-3 bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm" %>
+        </div>
+
+        <!-- Select User -->
+        <div class="mb-6">
+          <%= form.label :user_id, "Assign to User", class: "block text-sm font-medium text-blue-200 mb-1" %>
+          <%= form.collection_select :user_id, User.all, :id, :email, { prompt: "Select a user" }, class: "w-full p-3 bg-gray-900 text-blue-100 border border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm" %>
+        </div>
+      <% end %>
+
+      <!-- Submit -->
+      <div class="flex justify-center mt-8">
+        <%= form.submit learn_and_earn.new_record? ? "Submit Entry" : "Update Entry", class: "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-8 rounded-xl shadow-md transition-all duration-200" %>
+      </div>
+    <% end %>
+  </div>
+</body>

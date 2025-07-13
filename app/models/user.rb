@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :links, dependent: :destroy
   has_many :withdrawals
   has_many :notifications, dependent: :destroy
-
+  has_many :learn_and_earns, dependent: :destroy
 
   def total_earned
     clicks.count* 0.0003222222222

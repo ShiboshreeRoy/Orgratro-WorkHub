@@ -1,0 +1,43 @@
+<div id="<%= dom_id learn_and_earn %>" class="w-full max-w-3xl mx-auto bg-black text-blue-100 p-6 rounded-xl shadow-lg space-y-6">
+
+  <!-- User Info -->
+  <div>
+    <p class="text-sm font-semibold text-blue-300 uppercase tracking-wider mb-1">Submitted By</p>
+    <p class="bg-gray-900 p-3 rounded-lg border border-blue-500 text-blue-100 break-all">
+      <%= learn_and_earn.user.try(:email) || "Unknown User" %>
+    </p>
+  </div>
+
+  <!-- Referral Link -->
+  <div>
+    <p class="text-sm font-semibold text-blue-300 uppercase tracking-wider mb-1">Referral Link</p>
+    <p class="bg-gray-900 p-3 rounded-lg border border-blue-500 text-blue-100 break-all"><%= learn_and_earn.link %></p>
+  </div>
+
+  <!-- Social Post -->
+  <div>
+    <p class="text-sm font-semibold text-blue-300 uppercase tracking-wider mb-1">Social Post</p>
+    <p class="bg-gray-900 p-3 rounded-lg border border-blue-500 text-blue-100 whitespace-pre-line"><%= learn_and_earn.social_post %></p>
+  </div>
+
+  <!-- Proof -->
+  <div>
+    <p class="text-sm font-semibold text-blue-300 uppercase tracking-wider mb-1">Proof</p>
+    <p class="bg-gray-900 p-3 rounded-lg border border-blue-500 text-blue-100 break-all"><%= learn_and_earn.proof %></p>
+  </div>
+
+  <!-- Status -->
+  <div>
+    <p class="text-sm font-semibold text-blue-300 uppercase tracking-wider mb-1">Status</p>
+    <span class="inline-block px-4 py-1 text-sm rounded-full font-semibold 
+      <%= case learn_and_earn.status
+          when 'approved' then 'bg-green-700 text-green-100'
+          when 'pending'  then 'bg-yellow-600 text-yellow-100'
+          when 'rejected' then 'bg-red-700 text-red-100'
+          else 'bg-gray-700 text-white'
+          end %>">
+      <%= learn_and_earn.status.capitalize %>
+    </span>
+  </div>
+
+</div>

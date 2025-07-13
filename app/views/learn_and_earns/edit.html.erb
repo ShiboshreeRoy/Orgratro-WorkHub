@@ -1,0 +1,29 @@
+<% content_for :title, "Submit Learn & Earn Entry" %>
+
+<div class="min-h-screen bg-black text-blue-100 flex justify-center items-center px-6 py-12">
+  <div class="w-full max-w-3xl">
+  <% if current_user.admin? %>
+    <h1 class="text-4xl font-extrabold text-blue-400 mb-8 text-center">Aproved Learn & Earn Entry</h1>
+  <% else %>
+    <h1 class="text-4xl font-extrabold text-blue-400 mb-8 text-center">Submited Learn & Earn Entry</h1>
+  <% end %>
+
+    <%= render "form", learn_and_earn: @learn_and_earn %>
+
+    <div class="mt-8 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-4">
+      <% if current_user.admin? %>
+      <%= link_to "← View This Entry",
+                  @learn_and_earn,
+                  class: "w-full sm:w-auto text-center rounded-lg px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-blue-200 font-semibold shadow-sm transition duration-150" %>
+
+      <%= link_to "← Back to All Entries",
+                  learn_and_earns_path,
+               class: "w-full sm:w-auto text-center rounded-lg px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-blue-200 font-semibold shadow-sm transition duration-150" %>
+    <% else %>
+       <%= link_to "← Back to All Entries",
+                  learn_and_earns_path,
+               class: "w-full sm:w-auto text-center rounded-lg px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-blue-200 font-semibold shadow-sm transition duration-150" %>
+    <% end %>
+    </div>
+  </div>
+</div>

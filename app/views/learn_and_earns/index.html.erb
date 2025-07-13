@@ -1,0 +1,103 @@
+<body class="bg-black text-blue-300 min-h-screen px-4 py-8">
+  <h1 class="text-3xl font-bold text-blue-400 mb-6 text-center">Add Learn & Earn Links</h1>
+
+  <% if current_user.admin? %>
+    <div class="text-center mb-6">
+      <%= link_to "New Learn & Earn", new_learn_and_earn_path,
+          class: "inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded transition" %>
+    </div>
+  <% end %>
+
+  <div class="overflow-x-auto border border-gray-700 rounded-lg shadow-lg">
+    <table class="min-w-full divide-y divide-gray-700 text-sm md:text-base">
+      <thead class="bg-gray-900">
+        <tr>
+          <th class="px-4 py-3 text-left text-blue-300 uppercase tracking-wide whitespace-nowrap">Referral Link</th>
+          <th class="px-4 py-3 text-left text-blue-300 uppercase tracking-wide whitespace-nowrap">Social Post</th>
+          <th class="px-4 py-3 text-left text-blue-300 uppercase tracking-wide whitespace-nowrap">Proof</th>
+          <th class="px-4 py-3 text-left text-blue-300 uppercase tracking-wide whitespace-nowrap">Status</th>
+          <th class="px-4 py-3 text-center text-blue-300 uppercase tracking-wide whitespace-nowrap">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody class="bg-black divide-y divide-gray-800 text-blue-100">
+        <% @learn_and_earns.each do |entry| %>
+          <tr class="hover:bg-gray-900 transition-all duration-200">
+            <% status_colors = { "approved" => "text-green-400", "pending" => "text-yellow-400", "rejected" => "text-red-400" } %>
+
+            <!-- Referral Link -->
+            <td class="px-4 py-3 max-w-xs break-words">
+              <div class="flex items-center justify-between gap-2">
+                <% if current_user.admin? %>
+                  <span class="flex-grow truncate"><%= entry.link %></span>
+                <% else %>
+                  <span class="flex-grow opacity-70 cursor-not-allowed select-none truncate"><%= entry.link %></span>
+                <% end %>
+
+                <button
+                  type="button"
+                  class="shrink-0 px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400 transition copy-btn"
+                  data-copy-target="<%= dom_id(entry, :link) %>">
+                  Copy
+                </button>
+              </div>
+              <span id="<%= dom_id(entry, :link) %>" class="hidden"><%= entry.link %></span>
+            </td>
+
+            <!-- Social Post -->
+            <td class="px-4 py-3 max-w-xs break-words">
+              <% if current_user.admin? %>
+                <%= truncate(entry.social_post, length: 60) %>
+              <% else %>
+                <span class="opacity-70 cursor-not-allowed select-none"><%= truncate(entry.social_post, length: 60) %></span>
+              <% end %>
+            </td>
+
+            <!-- Proof -->
+            <td class="px-4 py-3 max-w-xs break-words"><%= entry.proof %></td>
+
+            <!-- Status -->
+            <td class="px-4 py-3 font-semibold">
+              <span class="<%= status_colors[entry.status] || 'text-gray-400' %>">
+                <%= entry.status.titleize %>
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="px-4 py-3 text-center space-x-4 whitespace-nowrap">
+              <% if current_user.admin? %>
+                <%= link_to "Show", learn_and_earn_path(entry), class: "text-blue-400 hover:text-blue-300" %>
+                <%= link_to "Edit", edit_learn_and_earn_path(entry), class: "text-green-400 hover:text-green-300" %>
+                <%= link_to "Delete", learn_and_earn_path(entry), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-500 hover:text-red-400" %>
+              <% else %>
+                <%= link_to "Submit Proof", edit_learn_and_earn_path(entry), class: "text-green-400 hover:text-green-300" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Copy Button Script with Event Delegation -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-copy-target]');
+        if (!button) return;
+
+        const targetId = button.getAttribute('data-copy-target');
+        const textToCopy = document.getElementById(targetId)?.textContent || '';
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const originalText = button.textContent;
+          button.textContent = "Copied!";
+          setTimeout(() => button.textContent = originalText, 2000);
+        }).catch(() => {
+          alert("Failed to copy to clipboard");
+        });
+      });
+    });
+  </script>
+</body>
