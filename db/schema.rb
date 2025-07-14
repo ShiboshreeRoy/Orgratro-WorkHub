@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_13_203915) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_14_212940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_203915) do
     t.bigint "link_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "learn_and_earn_id", null: false
+    t.bigint "learn_and_earn_id"
     t.index ["learn_and_earn_id"], name: "index_clicks_on_learn_and_earn_id"
     t.index ["link_id"], name: "index_clicks_on_link_id"
     t.index ["user_id"], name: "index_clicks_on_user_id"
@@ -70,6 +70,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_203915) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "link_id"
+    t.index ["link_id"], name: "index_learn_and_earns_on_link_id"
     t.index ["user_id"], name: "index_learn_and_earns_on_user_id"
   end
 
@@ -81,6 +83,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_203915) do
     t.decimal "earnings", precision: 20, scale: 10, default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "learn_and_earn_id"
+    t.integer "total_clicks", default: 0, null: false
+    t.index ["learn_and_earn_id"], name: "index_links_on_learn_and_earn_id"
     t.index ["url"], name: "index_links_on_url", unique: true
     t.index ["user_id"], name: "index_links_on_user_id"
   end
@@ -123,7 +128,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_13_203915) do
   add_foreign_key "clicks", "learn_and_earns"
   add_foreign_key "clicks", "links"
   add_foreign_key "clicks", "users"
+  add_foreign_key "learn_and_earns", "links"
   add_foreign_key "learn_and_earns", "users"
+  add_foreign_key "links", "learn_and_earns"
   add_foreign_key "links", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "withdrawals", "users"

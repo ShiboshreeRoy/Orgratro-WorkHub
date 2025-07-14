@@ -7,16 +7,7 @@
         বাংলাদেশের ৬৪টি জেলা:
       </strong>
       <p class="text-blue-700 dark:text-blue-400 break-words text-base underline decoration-dotted decoration-2">
-        <% countries = [
-          "ঢাকা", "ফরিদপুর", "গাজীপুর", "গোপালগঞ্জ", "কিশোরগঞ্জ", "মাদারীপুর", "মানিকগঞ্জ", "মুন্সিগঞ্জ", "নারায়ণগঞ্জ", "নরসিংদী", "রাজবাড়ী", "শরীয়তপুর", "টাঙ্গাইল",
-          "চট্টগ্রাম", "কক্সবাজার", "ব্রাহ্মণবাড়িয়া", "চাঁদপুর", "কুমিল্লা", "ফেনী", "লক্ষ্মীপুর", "নোয়াখালী", "খাগড়াছড়ি", "রাঙ্গামাটি", "বান্দরবান",
-          "সিরাজগঞ্জ", "পাবনা", "বগুড়া", "রাজশাহী", "নাটোর", "জয়পুরহাট", "চাঁপাইনবাবগঞ্জ", "নওগাঁ",
-          "যশোর", "কুষ্টিয়া", "মাগুরা", "চুয়াডাঙ্গা", "ঝিনাইদহ", "খুলনা", "বাগেরহাট", "সাতক্ষীরা", "নড়াইল", "মেহেরপুর",
-          "বরিশাল", "পটুয়াখালী", "ভোলা", "পিরোজপুর", "ঝালকাঠি", "বরগুনা",
-          "সিলেট", "মৌলভীবাজার", "হবিগঞ্জ", "সুনামগঞ্জ",
-          "রংপুর", "দিনাজপুর", "নীলফামারী", "ঠাকুরগাঁও", "কুড়িগ্রাম", "গাইবান্ধা", "লালমনিরহাট", "পঞ্চগড়",
-          "ময়মনসিংহ", "জামালপুর", "নেত্রকোনা", "শেরপুর"
-        ] %>
+        <% countries = [ "love","me"] %>
         <% country_name = countries.sample %>
 
         <%= link_to country_name, link.url, target: "_blank", rel: "noopener", class: "hover:text-blue-500 transition-colors" %>
@@ -24,72 +15,17 @@
     </div>
 
     <!-- Click & Earn Button -->
-    <button data-link-url="<%= link.url %>" data-link-id="<%= link.id %>"
-            class="start-click w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-95 transition-transform text-white font-semibold py-3 px-6 rounded-full shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50">
+    <button data-link-id="<%= link.id %>" data-link-url="<%= link.url %>"
+      class="start-click w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-95 transition-transform text-white font-semibold py-3 px-6 rounded-full shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50">
       Click & Earn
     </button>
 
-    <!-- Countdown Display -->
+    <!-- Countdown -->
     <div id="countdown-<%= link.id %>" class="hidden text-center text-yellow-500 font-bold text-lg mt-5 select-none"></div>
 
-    <!-- Hidden Form for Auto-Submit -->
+    <!-- Auto Submit Form -->
     <%= form_with url: click_link_path(link), method: :post, local: true, html: { id: "auto-submit-form-#{link.id}", class: "hidden" } do %>
       <%= hidden_field_tag :auto_claim, true %>
     <% end %>
-
-    <!-- Ripple Effect -->
-    <span class="ripple-effect hidden absolute inset-0 bg-blue-400 opacity-30 rounded-full animate-ping pointer-events-none"></span>
   </div>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".start-click").forEach(button => {
-      button.addEventListener("click", () => {
-        if(button.clicked) return;
-        button.clicked = true;
-
-        const linkUrl = button.getAttribute("data-link-url");
-        const linkId = button.getAttribute("data-link-id");
-        const newTab = window.open(linkUrl, "_blank");
-
-        const parentDiv = button.closest("div[id]");
-        const countdownEl = parentDiv.querySelector("#countdown-" + linkId);
-        const autoSubmitForm = parentDiv.querySelector("#auto-submit-form-" + linkId);
-
-        let timeLeft = 20;
-        let rewardCompleted = false;
-
-        countdownEl.classList.remove("hidden");
-        countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-
-        button.disabled = true;
-        button.classList.add("opacity-50", "cursor-not-allowed");
-
-        const timer = setInterval(() => {
-          timeLeft--;
-          countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-
-          if (timeLeft <= 0) {
-            clearInterval(timer);
-            rewardCompleted = true;
-            countdownEl.textContent = "🎉 Reward earned!";
-            autoSubmitForm.submit();
-          }
-        }, 1000);
-
-        // Detect if tab closed early
-        const cancelCheckInterval = setInterval(() => {
-          if (newTab && newTab.closed && !rewardCompleted) {
-            clearInterval(timer);
-            clearInterval(cancelCheckInterval);
-            alert("⚠️ Reward cancelled because the tab was closed too early.");
-            // location.reload();  <-- Removed this line
-          }
-          if (rewardCompleted) {
-            clearInterval(cancelCheckInterval);
-          }
-        }, 1000);
-      });
-    });
-  });
-</script>

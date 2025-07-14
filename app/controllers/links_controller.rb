@@ -23,6 +23,10 @@ class LinksController < ApplicationController
   def edit
   end
 
+  def click_window
+  @url = params[:url]
+  render layout: false
+end
   # POST /links or /links.json
   '''def create
     @link = Link.new(link_params)
@@ -40,8 +44,10 @@ class LinksController < ApplicationController
 '''
 
 def create
-  @link = Link.new(link_params)
-  @link.user = current_user  # If links are created by logged-in admin/staff
+  @link = Link.new(link_params.merge(user: current_user)) # Ensure link is associated with the current user
+  #@link.user = current_user  # If links are created by logged-in admin/staff
+   @link.learn_and_earn ||= LearnAndEarn.first # assign first campaign if none given
+
 
   if @link.save
     redirect_to links_path, notice: "Link was successfully created."

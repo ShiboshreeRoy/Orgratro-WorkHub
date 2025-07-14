@@ -7,7 +7,8 @@ Rails.application.routes.draw do
  
   get "user_dashbord/index"
   resources :withdrawals
-  resources :clicks
+ resources :clicks, only: [:create]
+
   resources :learn_and_earns do
      member do
     post :track_click
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
 
   resources :links 
   post "click_link/:id", to: "clicks#create", as: "click_link"
+  get "click_window/:id", to: "links#click_window", as: :click_window
   #post 'claim_reward/:id', to: 'links#claim_reward', as: :claim_reward
 
 

@@ -59,3 +59,9 @@ group :test do
 end
 
 gem "devise", "~> 4.9"
+
+gem "dockerfile-rails", ">= 1.7", group: :development
+
+gem "aws-sdk-s3", "~> 1.192", require: false
+
+gem "redis", "~> 5.4"

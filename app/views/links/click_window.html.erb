@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Click Window</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      window.onload = () => {
+        const url = "<%= @url %>";
+        window.open(url, "_self");
+      };
+    </script>
+  </head>
+  <body style="background:#000;color:white;text-align:center;padding:2em">
+    <h1>🔁 Redirecting to link...</h1>
+  </body>
+</html>

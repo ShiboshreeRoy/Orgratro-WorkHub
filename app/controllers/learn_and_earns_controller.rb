@@ -29,6 +29,11 @@ class LearnAndEarnsController < ApplicationController
   def create
     @learn_and_earn = LearnAndEarn.new(learn_and_earn_params)
     @learn_and_earn.skip_proof_validation = true  # allow admin to skip proof validation
+    #  @link = Link.find(params[:link_id])
+    #@learn_and_earn = @link.learn_and_earn
+
+    #Click.create!(user: current_user, link: @link, learn_and_earn: @learn_and_earn)
+
 
     respond_to do |format|
       if @learn_and_earn.save

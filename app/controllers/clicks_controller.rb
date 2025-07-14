@@ -37,23 +37,32 @@ class ClicksController < ApplicationController
 '''
 
   def create
-    @link = Link.find(params[:id])
+  @link = Link.find(params[:id])
 
-    already_clicked = Click.exists?(
+  already_clicked = Click.exists?(
+    user: current_user,
+    link: @link,
+    created_at: 24.hours.ago..Time.now
+  )
+
+  if already_clicked
+    redirect_to links_path, alert: "You already clicked this link today."
+  else
+    @learn_and_earn = @link.learn_and_earn
+
+    Click.create!(
       user: current_user,
       link: @link,
-      created_at: 24.hours.ago..Time.now
+      learn_and_earn: @learn_and_earn
     )
 
-    if already_clicked
-      redirect_to links_path, alert: "You already clicked this link today."
-    else
-      Click.create!(user: current_user, link: @link)
-      @link.increment!(:total_clicks)
-      current_user.increment!(:balance, 0.0000000001)
-      redirect_to links_path, notice: "Click recorded. You earned $0.0000000001!"
-    end
+    @link.increment!(:total_clicks)
+    current_user.increment!(:balance, 0.0000000001)
+
+    redirect_to links_path, notice: "Click recorded. You earned $0.0000000001!"
   end
+end
+
   # PATCH/PUT /clicks/1 or /clicks/1.json
   def update
     respond_to do |format|
