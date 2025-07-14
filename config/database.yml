@@ -19,6 +19,11 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+  username: chris
+  password: shibu009@
+  port: 5432
+  host: localhost
+
  
 development:
   <<: *default

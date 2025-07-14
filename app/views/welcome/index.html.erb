@@ -23,7 +23,10 @@
   <!-- Call to action buttons -->
   <div class="flex flex-col sm:flex-row gap-8 animate-fade-in-up">
     <% if user_signed_in? %>
-      <%= link_to "Dashbord", admin_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
+    <%= current_user.admin? ? link_to("Admin Dashboard", admin_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105") : nil %>
+
+       <%= link_to "Go Dashbord",user_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
+    
     <% else %>
       <%= link_to "Sign Up", new_user_registration_path, class: "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
       <%= link_to "Log In", new_user_session_path, class: "bg-transparent border-2 border-blue-500 hover:border-blue-600 text-blue-400 hover:text-blue-600 px-10 py-4 rounded-3xl shadow-lg text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
