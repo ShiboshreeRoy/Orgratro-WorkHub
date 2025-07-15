@@ -22,9 +22,7 @@ Rails.application.routes.draw do
   resources :links 
   post "click_link/:id", to: "clicks#create", as: "click_link"
   get "click_window/:id", to: "links#click_window", as: :click_window
-  #post 'claim_reward/:id', to: 'links#claim_reward', as: :claim_reward
-
-
+  
 
   devise_for :users, 
   controllers: { registrations: 'users/registrations' }, 
