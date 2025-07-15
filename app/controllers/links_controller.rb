@@ -3,7 +3,7 @@ class LinksController < ApplicationController
   # Ensure user is admin for create, update, destroy actions
   #before_action :authorize_admin!, only: %i[ new create edit update destroy ]
   # Set link for show, edit, update, destroy actions
-  before_action :set_link, only: %i[ show edit update destroy ]
+  before_action :set_learn_and_earn, only: %i[ show edit update destroy ]
 
   # GET /links or /links.json
   def index
@@ -44,17 +44,17 @@ end
 '''
 
 def create
-  @link = Link.new(link_params.merge(user: current_user)) # Ensure link is associated with the current user
-  #@link.user = current_user  # If links are created by logged-in admin/staff
-   @link.learn_and_earn ||= LearnAndEarn.first # assign first campaign if none given
+    @link = Link.new(link_params)
+    @link.user = current_user
+    @link.learn_and_earn = @learn_and_earn if @learn_and_earn
 
-
-  if @link.save
-    redirect_to links_path, notice: "Link was successfully created."
-  else
-    render :new, status: :unprocessable_entity
+    if @link.save
+      redirect_to links_path, notice: "Link was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
-end
+
 
 # click action to handle link clicks
   # POST /click_link/:id
@@ -102,12 +102,13 @@ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_link
-      @link = Link.find(params[:id])
-    end
+    def set_learn_and_earn
+    @learn_and_earn = LearnAndEarn.find_by(id: params[:learn_and_earn_id]) || LearnAndEarn.first
+  end
+
 
     # Only allow a list of trusted parameters through.
     def link_params
-      params.require(:link).permit(:url, :total_clicks, :user_id)
+      params.require(:link).permit(:url, :total_clicks, :user_id, :learn_and_earn_id)
     end
 end

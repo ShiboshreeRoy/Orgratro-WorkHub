@@ -19,7 +19,10 @@ Rails.application.routes.draw do
 
   resources :contact_messages, only: [:new, :create, :index, :show, :destroy]
 
-  resources :links 
+  
+
+resources :links
+
   post "click_link/:id", to: "clicks#create", as: "click_link"
   get "click_window/:id", to: "links#click_window", as: :click_window
   
