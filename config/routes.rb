@@ -31,7 +31,14 @@ Rails.application.routes.draw do
   sign_out_via: [:get, :delete]
 
 
-  resources :admin , only: [:index, :create, :edit, :update, :show, :destory], controller: 'admin'
+  resources :admin, only: [:index, :create, :edit, :update, :show, :destroy], controller: 'admin' do
+  member do
+    get :toggle_suspend
+  patch :toggle_suspend
+  end
+end
+
+
   resources :admin_dashbord, only: [:index]
 
  resources :welcome do
