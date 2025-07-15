@@ -10,9 +10,13 @@
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
+
+      <%= favicon_link_tag 'Orgatro_Workhub.ico' %>
     
     <link rel="icon" href="<%= asset_path('Orgatro_Workhub.png')%>" type="image/png">
-    <link rel="icon" href="<%= asset_path('Orgatro_Workhub.png') %>" type="image/x-icon">  
+    
+
+     <link rel="icon" href="<%= asset_path('Orgatro_Workhub.png') %>" type="image/x-icon">  
     <link rel="apple-touch-icon" href="<%= asset_path('Orgatro_Workhub.svg')%>" sizes="192x192">
      <link rel="icon" href="<%= asset_path('Orgatro_Workhub.svg')%>" type="image/svg+xml">
 

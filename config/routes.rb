@@ -26,12 +26,11 @@ Rails.application.routes.draw do
 
 
 
-  
-  devise_for :users, controllers: { 
-    registrations: 'users/registrations' 
-  }
+  devise_for :users, 
+  controllers: { registrations: 'users/registrations' }, 
+  sign_out_via: [:get, :delete]
 
-  
+
   resources :admin , only: [:index, :create, :edit, :update, :show, :destory], controller: 'admin'
   resources :admin_dashbord, only: [:index]
 
