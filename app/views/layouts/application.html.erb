@@ -11,7 +11,8 @@
 
     <link rel="manifest" href="/manifest.json">
 
-      <%= favicon_link_tag 'Orgatro_Workhub.ico' %>
+     <%= favicon_link_tag 'Orgatro_Workhub.ico' if asset_path('Orgatro_Workhub.ico').present? rescue nil %>
+
     
     <link rel="icon" href="<%= asset_path('Orgatro_Workhub.png')%>" type="image/png">
     
