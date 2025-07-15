@@ -22,6 +22,7 @@ class LinksController < ApplicationController
 
   # GET /links/1/edit
   def edit
+     @link = Link.find(params[:id])
   end
 
   def click_window
@@ -93,6 +94,7 @@ def create
 
   # DELETE /links/1 or /links/1.json
   def destroy
+     @link = Link.find(params[:id])
     @link.destroy!
 
     respond_to do |format|
