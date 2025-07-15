@@ -2,6 +2,9 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "./toast"
+import "@rails/ujs"
+Rails.start()
+
 
 
 // This file is automatically compiled by Webpack, along with any other files
