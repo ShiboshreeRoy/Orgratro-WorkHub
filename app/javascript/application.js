@@ -2,8 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "./toast"
-
-
 //import "@rails/ujs"
 //Rails.start()
 
