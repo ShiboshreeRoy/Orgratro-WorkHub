@@ -6,7 +6,7 @@ import "./toast"
 //Rails.start()
 
 // This file is automatically compiled by Webpack, along with any other files
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   const channel = new BroadcastChannel("click_earn_channel");
 
   document.querySelectorAll(".start-click").forEach(button => {
@@ -69,3 +69,4 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 });
 
+*/
