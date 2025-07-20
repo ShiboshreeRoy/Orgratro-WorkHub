@@ -1,6 +1,6 @@
 class WelcomeController < ApplicationController
   def index
-    #current_user.admin! 
+    @active_user = User.all
   end
 
   def about

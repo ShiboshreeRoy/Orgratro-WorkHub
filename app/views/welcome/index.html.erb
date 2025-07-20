@@ -1,37 +1,354 @@
-<body class="bg-black text-white font-sans antialiased">
-
-<div class="min-h-screen relative bg-gradient-to-br from-black via-gray-900 to-black flex flex-col items-center justify-center text-center px-6 text-blue-300 font-sans overflow-hidden">
-
-  <!-- Decorative blurred circles -->
-  <div aria-hidden="true" class="absolute top-[-120px] left-[-100px] w-96 h-96 bg-blue-600 rounded-full opacity-20 filter blur-3xl animate-pulse-slow"></div>
-  <div aria-hidden="true" class="absolute bottom-[-120px] right-[-100px] w-96 h-96 bg-blue-400 rounded-full opacity-15 filter blur-3xl animate-pulse-slower"></div>
-
-  <!-- Main content -->
-  <h1 class="relative text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 mb-8 drop-shadow-xl animate-fade-in-down leading-tight max-w-4xl">
-    Welcome to Orgratro WorkHub
-    <span class="inline-block ml-3 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 text-sm font-semibold text-white tracking-wide shadow-lg">
-      Beta Version 1.0
-    </span>
-  </h1>
-
-  <p class="relative max-w-3xl text-blue-300 text-xl mb-12 animate-fade-in-up leading-relaxed tracking-wide">
-    Join now and get paid for every link you visit.<br>
-    No experience needed. Just click, earn, and withdraw.<br>
-    Manage your work smarter, connect with your team, and grow your earnings effortlessly.
-  </p>
-
-  <!-- Call to action buttons -->
-  <div class="flex flex-col sm:flex-row gap-8 animate-fade-in-up">
-    <% if user_signed_in? %>
-    <%= current_user.admin? ? link_to("Admin Dashboard", admin_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105") : nil %>
-
-       <%= link_to "Go Dashbord",user_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse-slow': 'pulse-slow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-slower': 'pulse-slower 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in-down': 'fade-in-down 0.8s ease-out',
+                        'fade-in-up': 'fade-in-up 0.8s ease-out',
+                        'float': 'float 4s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        'pulse-slow': {
+                            '0%, 100%': { opacity: '0.2' },
+                            '50%': { opacity: '0.35' }
+                        },
+                        'pulse-slower': {
+                            '0%, 100%': { opacity: '0.15' },
+                            '50%': { opacity: '0.25' }
+                        },
+                        'fade-in-down': {
+                            '0%': { opacity: '0', transform: 'translateY(-1.25rem)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'fade-in-up': {
+                            '0%': { opacity: '0', transform: 'translateY(1.25rem)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-0.625rem)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a12;
+            background-image: radial-gradient(circle at 10% 20%, rgba(30, 58, 138, 0.1) 0%, rgba(0, 0, 0, 0) 40%),
+                              radial-gradient(circle at 90% 80%, rgba(30, 64, 175, 0.1) 0%, rgba(0, 0, 0, 0) 40%);
+            color: #e0f2fe;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.7);
+            border: .0625rem solid rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(.625rem);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-0.3125rem);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 .625rem 1.5625rem rgba(2, 132, 199, 0.2);
+        }
+        
+        .testimonial-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: .0625rem solid rgba(56, 189, 248, 0.1);
+            backdrop-filter: blur(.3125rem);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            box-shadow: 0 .25rem .9375rem rgba(2, 132, 199, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-0.1875rem);
+            box-shadow: 0 .375rem 1.25rem rgba(2, 132, 199, 0.4);
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: .125rem solid #38bdf8;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(56, 189, 248, 0.1);
+            transform: translateY(-0.1875rem);
+            box-shadow: 0 .25rem .9375rem rgba(56, 189, 248, 0.2);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 50%, #0284c7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .beta-badge {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            box-shadow: 0 .25rem .625rem rgba(2, 132, 199, 0.3);
+        }
+        
+        .faq-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: .0625rem solid rgba(56, 189, 248, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.7);
+        }
+        
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+    <!-- Decorative elements -->
+    <div aria-hidden="true" class="fixed top-[5%] left-[5%] w-60 h-60 rounded-full bg-blue-600 opacity-10 filter blur-3xl animate-pulse-slow"></div>
+    <div aria-hidden="true" class="fixed top-[15%] right-[10%] w-80 h-80 rounded-full bg-blue-400 opacity-10 filter blur-3xl animate-pulse-slower"></div>
+    <div aria-hidden="true" class="fixed bottom-[10%] left-[10%] w-72 h-72 rounded-full bg-cyan-500 opacity-10 filter blur-3xl animate-pulse-slow"></div>
     
-    <% else %>
+    <!-- Main content -->
+    <div class="min-h-screen relative flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-16 md:py-24 overflow-hidden">
+        <!-- Floating elements -->
+        <div class="floating absolute top-20 left-10 w-8 h-8 rounded-full bg-blue-500 opacity-20"></div>
+        <div class="floating absolute bottom-40 right-20 w-12 h-12 rounded-full bg-cyan-400 opacity-20"></div>
+        
+        <!-- Header -->
+        <div class="text-center max-w-4xl z-10">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 animate-fade-in-down">
+                <span class="text-gradient">Welcome to Orgratro WorkHub</span>
+                <span class="inline-block ml-3 px-3 py-1 rounded-full beta-badge text-xs sm:text-sm font-semibold text-white tracking-wide">
+                    Beta Version 1.0
+                </span>
+            </h1>
+            
+            <!-- Subtext -->
+            <p class="text-xl sm:text-2xl text-blue-200 mb-10 animate-fade-in-up max-w-3xl mx-auto leading-relaxed">
+                Get paid for every link you visit. No experience needed.<br class="hidden md:block">
+                Click, earn, withdraw. Join thousands earning effortlessly today!
+            </p>
+            
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mb-16 animate-fade-in-up">
+            <% if user_signed_in? %>
+                  <%= current_user.admin? ? link_to("Admin Dashboard", admin_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105") : nil %>
 
-      <%= link_to "Log In", new_user_session_path, class: "bg-transparent border-2 border-blue-500 hover:border-blue-600 text-blue-400 hover:text-blue-600 px-10 py-4 rounded-3xl shadow-lg text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
-    <% end %>
-  </div>
+                  <%= link_to "Go Dashbord",user_dashbord_index_path, class: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-3xl shadow-2xl text-xl font-semibold transition duration-300 ease-in-out transform hover:scale-105" %>
+    
+            <% else %>
+                <%= link_to new_user_session_path,class: "btn-primary px-8 py-4 rounded-2xl text-lg font-semibold text-center" do %>
+                    <i class="fas fa-rocket mr-2"></i>Start Earning Now
+                <% end %>
+                 <%=link_to new_user_session_path ,class: "btn-secondary px-8 py-4 rounded-2xl text-lg font-semibold text-center" do %>
+                    <i class="fas fa-sign-in-alt mr-2"></i>Log In
+                <% end %>
+            </div>
+            <% end %>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 max-w-5xl w-full animate-fade-in-up">
+            <div class="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 p-5 rounded-2xl text-center border border-blue-800/30">
+                <div class="text-3xl font-bold text-blue-300"><%= number_to_human(@active_user.count, units: { thousand: 'k+', million: 'M+' }, format: '%n%u', precision: 1, significant: false, strip_insignificant_zeros: true) %></div>
+                <div class="text-blue-200 mt-2">Active Users</div>
+            </div>
+            <div class="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 p-5 rounded-2xl text-center border border-blue-800/30">
+                <div class="text-3xl font-bold text-blue-300">$650K+</div>
+                <div class="text-blue-200 mt-2">Paid Out</div>
+            </div>
+            <div class="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 p-5 rounded-2xl text-center border border-blue-800/30">
+                <div class="text-3xl font-bold text-blue-300">98%</div>
+                <div class="text-blue-200 mt-2">Withdrawal Success</div>
+            </div>
+            <div class="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 p-5 rounded-2xl text-center border border-blue-800/30">
+                <div class="text-3xl font-bold text-blue-300">24/7</div>
+                <div class="text-blue-200 mt-2">Support</div>
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="max-w-6xl w-full z-10">
+            <h2 class="text-3xl font-bold text-center text-blue-300 mb-16">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card rounded-2xl p-6">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center mb-5">
+                        <i class="fas fa-mouse-pointer text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">Click & Earn</h3>
+                    <p class="text-blue-200">Get rewarded for each verified click. Transparent rates, instant tracking, and daily opportunities to earn.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card rounded-2xl p-6">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center mb-5">
+                        <i class="fas fa-users text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">Team Collaboration</h3>
+                    <p class="text-blue-200">Build your team, track performance collectively, and unlock team bonuses to maximize your earnings.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card rounded-2xl p-6">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center mb-5">
+                        <i class="fas fa-wallet text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3">Fast Withdrawals</h3>
+                    <p class="text-blue-200">Withdraw your earnings anytime to Bikash,Nogot,Rocket or Bank with low $100 minimum and instant processing.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testimonials Section -->
+        <div class="mt-28 max-w-4xl w-full z-10">
+            <h2 class="text-3xl font-bold text-center text-blue-300 mb-16">Trusted by Thousands</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card rounded-2xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                            <span class="text-white font-bold">AS</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-bold text-blue-300">Aditi Sharma</div>
+                            <div class="text-blue-400 text-sm">Freelance Marketer</div>
+                        </div>
+                    </div>
+                    <p class="text-blue-200 italic">"Orgratro has completely changed how I earn online. The simplicity combined with the earning potential is unmatched. I've made over $1,200 in just three months!"</p>
+                    <div class="flex text-yellow-400 mt-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card rounded-2xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                            <span class="text-white font-bold">JD</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="font-bold text-blue-300">John Dsouza</div>
+                            <div class="text-blue-400 text-sm">Content Creator</div>
+                        </div>
+                    </div>
+                    <p class="text-blue-200 italic">"The dashboard is incredibly intuitive and payouts are lightning fast. I've tried similar platforms, but Orgratro's reliability and support make it the best by far."</p>
+                    <div class="flex text-yellow-400 mt-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="mt-28 max-w-4xl w-full z-10">
+            <h2 class="text-3xl font-bold text-center text-blue-300 mb-16">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="faq-item rounded-2xl p-6">
+                    <div class="flex justify-between items-center cursor-pointer">
+                        <h3 class="text-lg font-semibold text-blue-400">How much can I earn per click?</h3>
+                        <i class="fas fa-chevron-down text-blue-500"></i>
+                    </div>
+                    <p class="mt-4 text-blue-200 hidden">Earnings vary by campaign, but most users earn between $0.0003222222222 to $0.0004222222222 per verified click. Premium campaigns can pay up to $1.00 per click!</p>
+                </div>
+                
+                <!-- FAQ 2 -->
+                <div class="faq-item rounded-2xl p-6">
+                    <div class="flex justify-between items-center cursor-pointer">
+                        <h3 class="text-lg font-semibold text-blue-400">How quickly can I withdraw my earnings?</h3>
+                        <i class="fas fa-chevron-down text-blue-500"></i>
+                    </div>
+                    <p class="mt-4 text-blue-200 hidden">Withdrawals are processed instantly once you reach the $100 minimum. Most users receive funds in their account within 1-2 hours.</p>
+                </div>
+                
+                <!-- FAQ 3 -->
+                <div class="faq-item rounded-2xl p-6">
+                    <div class="flex justify-between items-center cursor-pointer">
+                        <h3 class="text-lg font-semibold text-blue-400">Is there any investment required?</h3>
+                        <i class="fas fa-chevron-down text-blue-500"></i>
+                    </div>
+                    <p class="mt-4 text-blue-200 hidden">No investment required! Orgratro is 100% free to join. You'll never be asked for payment information to start earning.</p>
+                </div>
+                
+                <!-- FAQ 4 -->
+                <div class="faq-item rounded-2xl p-6">
+                    <div class="flex justify-between items-center cursor-pointer">
+                        <h3 class="text-lg font-semibold text-blue-400">Can I use this on mobile?</h3>
+                        <i class="fas fa-chevron-down text-blue-500"></i>
+                    </div>
+                    <p class="mt-4 text-blue-200 hidden">Absolutely! Our platform is fully responsive and works on any device. We also have mobile apps for iOS and Android for on-the-go earning.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Final CTA -->
+        <div class="mt-20 text-center z-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-blue-300 mb-6">Ready to Start Earning?</h2>
+            <p class="text-xl text-blue-200 max-w-2xl mx-auto mb-10">Finish your training, complete tasks, and unlock your Orgatro Certificate — all for free. Start earning today. Join now!</p>
+            <%=link_to new_user_session_path,class: "btn-primary px-10 py-5 rounded-2xl text-xl font-bold inline-block"  do %>
+                <i class="fas fa-gift mr-3"></i>Join Now & Get  Certificate
+            <% end  %>
+        </div>
+        
+       
+    </div>
 
-</div>
+    <script>
+        // Simple accordion for FAQ
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const header = item.querySelector('h3').parentElement;
+            const content = item.querySelector('p');
+            
+            header.addEventListener('click', () => {
+                const isOpen = content.classList.contains('hidden');
+                
+                // Close all others
+                document.querySelectorAll('.faq-item p').forEach(p => {
+                    p.classList.add('hidden');
+                });
+                
+                // Toggle current
+                if (isOpen) {
+                    content.classList.remove('hidden');
+                } else {
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
+</html>

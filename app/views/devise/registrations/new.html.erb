@@ -17,9 +17,10 @@
       </div>
 
       <!-- Role -->
+      <!---
       <div class="mb-6">
         <%= f.label :role, "Select Role", class: "block text-sm font-semibold text-gray-300 mb-2" %>
-        <%= f.select :role,
+    <%= f.select :role,
               options_for_select([
                 ["standard", "standard"],
                 ["Admin", "admin"],
@@ -29,7 +30,7 @@
               { prompt: "Choose your role" },
               class: "w-full rounded-xl border border-gray-700 bg-gray-800 text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" %>
       </div>
-
+--->
       <!-- Password -->
       <div class="mb-6">
         <%= f.label :password, class: "block text-sm font-semibold text-gray-300 mb-2" %>
@@ -48,12 +49,16 @@
       </div>
 
       <!-- Submit -->
-      <div>
-        <%= f.submit "Sign Up",
-            class: "w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 text-white font-bold rounded-xl shadow-lg transition duration-200 ease-in-out hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-400/50" %>
+    <!---  
+          <div class="mt-6">
+            <%= f.submit "Sign Up",
+                  class: "w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 text-white font-bold rounded-xl shadow-lg transition duration-200 ease-in-out hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-400/50 disabled:opacity-50 disabled:cursor-not-allowed",
+             disabled: true %>
+          </div>
+
       </div>
     <% end %>
-
+-->
     <div class="mt-6 text-center text-sm text-gray-400">
       
     </div>
