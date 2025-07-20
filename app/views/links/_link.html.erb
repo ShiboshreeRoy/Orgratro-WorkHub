@@ -54,7 +54,7 @@
       const form = document.querySelector(`#auto-submit-form-${linkId}`);
       const newTab = window.open(`/click_window/${linkId}?url=${encodeURIComponent(linkUrl)}`, "_blank");
 
-      let timeLeft = 15;
+      let timeLeft = 30;
       button.disabled = true;
       button.classList.add("opacity-50", "cursor-not-allowed");
       countdownEl.classList.remove("hidden");

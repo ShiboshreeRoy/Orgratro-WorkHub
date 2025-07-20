@@ -47,6 +47,7 @@ end
     get :about
     get :service
     get :contact_us
+    get :about_developer
   end
 end
 
