@@ -15,6 +15,15 @@ class User < ApplicationRecord
 
   def total_earned
     clicks.count* 0.0003222222222
-  
+  end
+
+   # Prevent login if suspended
+  def active_for_authentication?
+    super && !suspended?
+  end
+
+  # Optional: custom message
+  def inactive_message
+    !suspended? ? super : :suspended
   end
 end
