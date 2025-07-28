@@ -1,43 +1,62 @@
 <% content_for :title, "Send Notification" %>
 <body class="bg-black text-blue-400">
-<div class="max-w-4xl mx-auto mt-12 p-8 bg-black text-white rounded-2xl shadow-lg border border-blue-500">
-  <h1 class="text-4xl font-extrabold mb-8 text-blue-400 tracking-wide border-b border-blue-500 pb-4">
-    ✉️ Send Notification
-  </h1>
+  <div class="max-w-4xl mx-auto mt-12 p-8 bg-black text-white rounded-2xl shadow-lg border border-blue-500">
+    <h1 class="text-4xl font-extrabold mb-8 text-blue-400 tracking-wide border-b border-blue-500 pb-4">
+      ✉️ Send Notification
+    </h1>
 
-  <%= form_with url: admin_notifications_path, method: :post, local: true do %>
-    <!-- Title -->
-    <div class="mb-6">
-      <%= label_tag "notification_title", "Notification Title", class: "block font-semibold text-blue-300 mb-1" %>
-      <%= text_field_tag "notification[title]", nil,
-          class: "w-full bg-gray-900 text-white border border-blue-500 rounded-md p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-    </div>
-
-    <!-- Message -->
-    <div class="mb-6">
-      <%= label_tag "notification_message", "Message", class: "block font-semibold text-blue-300 mb-1" %>
-      <%= text_area_tag "notification[message]", nil, rows: 6,
-          class: "w-full bg-gray-900 text-white border border-blue-500 rounded-md p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
-    </div>
-
-    <!-- Users Selection -->
-    <div class="mb-8">
-      <%= label_tag "user_ids[]", "Select Users", class: "block font-semibold text-blue-300 mb-2" %>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-64 overflow-y-auto">
-        <% @users.each do |user| %>
-          <label class="flex items-center space-x-2 text-sm bg-gray-800 hover:bg-gray-700 border border-blue-500 px-4 py-2 rounded-lg">
-            <%= check_box_tag "user_ids[]", user.id, false, class: "accent-blue-500" %>
-            <span class="text-white"><%= user.email %></span>
-          </label>
-        <% end %>
+    <%= form_with url: admin_notifications_path, method: :post, local: true do %>
+      <!-- Title -->
+      <div class="mb-6">
+        <%= label_tag "notification_title", "Notification Title", class: "block font-semibold text-blue-300 mb-1" %>
+        <%= text_field_tag "notification[title]", nil,
+            class: "w-full bg-gray-900 text-white border border-blue-500 rounded-md p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
       </div>
-    </div>
 
-    <!-- Submit -->
-    <div class="text-right">
-      <%= submit_tag "🚀 Send Notification",
-          class: "bg-blue-500 hover:bg-blue-600 text-black font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-150" %>
-    </div>
-  <% end %>
-</div>
+      <!-- Message -->
+      <div class="mb-6">
+        <%= label_tag "notification_message", "Message", class: "block font-semibold text-blue-300 mb-1" %>
+        <%= text_area_tag "notification[message]", nil, rows: 6,
+            class: "w-full bg-gray-900 text-white border border-blue-500 rounded-md p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+      </div>
+
+      <!-- Users Selection -->
+      <div class="mb-8">
+        <%= label_tag "user_ids[]", "Select Users", class: "block font-semibold text-blue-300 mb-2" %>
+
+        <!-- Select All Option -->
+        <label class="flex items-center space-x-2 text-sm bg-gray-800 border border-blue-500 px-4 py-2 rounded-lg mb-3 hover:bg-gray-700">
+          <input type="checkbox" id="select-all" class="accent-blue-500">
+          <span class="text-blue-300 font-semibold">Select All Users</span>
+        </label>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-64 overflow-y-auto">
+          <% @users.each do |user| %>
+            <label class="flex items-center space-x-2 text-sm bg-gray-800 hover:bg-gray-700 border border-blue-500 px-4 py-2 rounded-lg">
+              <%= check_box_tag "user_ids[]", user.id, false, class: "user-checkbox accent-blue-500" %>
+              <span class="text-white"><%= user.email %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="text-right">
+        <%= submit_tag "🚀 Send Notification",
+            class: "bg-blue-500 hover:bg-blue-600 text-black font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-150" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- JavaScript for Select All functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const selectAll = document.getElementById('select-all');
+      const checkboxes = document.querySelectorAll('.user-checkbox');
+
+      selectAll.addEventListener('change', function () {
+        checkboxes.forEach(cb => cb.checked = selectAll.checked);
+      });
+    });
+  </script>
 </body>

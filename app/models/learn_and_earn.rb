@@ -1,5 +1,6 @@
 class LearnAndEarn < ApplicationRecord
   belongs_to :user
+  
   has_many :clicks, dependent: :destroy
   has_many :links, dependent: :destroy
 
