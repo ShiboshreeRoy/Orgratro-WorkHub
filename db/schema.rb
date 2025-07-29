@@ -60,7 +60,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_190826) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_contact_messages_on_user_id"
   end
 
