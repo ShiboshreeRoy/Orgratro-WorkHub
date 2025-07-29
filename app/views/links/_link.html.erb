@@ -16,7 +16,7 @@
                         "সিলেট", "সুনামগঞ্জ", "মৌলভীবাজার", "হবিগঞ্জ",
                         "রংপুর", "দিনাজপুর", "ঠাকুরগাঁও", "পঞ্চগড়", "নীলফামারী", "গাইবান্ধা", "কুড়িগ্রাম", "লালমনিরহাট",
                         "ময়মনসিংহ", "জামালপুর", "শেরপুর", "নেত্রকোনা"
-                      ]%>
+                      ] %>
         <% country_name = countries.sample %>
 
         <%= link_to country_name, link.url, target: "_blank", rel: "noopener", class: "hover:text-blue-500 transition-colors" %>
@@ -41,66 +41,73 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-  const channel = new BroadcastChannel("click_earn_channel");
+    const channel = new BroadcastChannel("click_earn_channel");
 
-  document.querySelectorAll(".start-click").forEach(button => {
-    button.addEventListener("click", () => {
-      if (button.clicked) return;
-      button.clicked = true;
+    document.querySelectorAll(".start-click").forEach(button => {
+      button.addEventListener("click", () => {
+        if (button.clicked) return;
+        button.clicked = true;
 
-      const linkId = button.dataset.linkId;
-      const linkUrl = button.dataset.linkUrl;
-      const countdownEl = document.querySelector(`#countdown-${linkId}`);
-      const form = document.querySelector(`#auto-submit-form-${linkId}`);
-      const newTab = window.open(`/click_window/${linkId}?url=${encodeURIComponent(linkUrl)}`, "_blank");
+        const linkId = button.dataset.linkId;
+        const linkUrl = button.dataset.linkUrl;
+        const countdownEl = document.querySelector(`#countdown-${linkId}`);
+        const form = document.querySelector(`#auto-submit-form-${linkId}`);
+        const newTab = window.open(`/click_window/${linkId}?url=${encodeURIComponent(linkUrl)}`, "_blank");
 
-      let timeLeft = 30;
-      button.disabled = true;
-      button.classList.add("opacity-50", "cursor-not-allowed");
-      countdownEl.classList.remove("hidden");
-      countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-
-      const timer = setInterval(() => {
-        timeLeft--;
+        let timeLeft = 30;
+        button.disabled = true;
+        button.classList.add("opacity-50", "cursor-not-allowed");
+        countdownEl.classList.remove("hidden");
         countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-        channel.postMessage({ type: "update", linkId, timeLeft });
 
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          countdownEl.textContent = "🎉 Reward earned!";
-          form.submit();
-          channel.postMessage({ type: "complete", linkId });
-        }
-      }, 1000);
+        const timer = setInterval(() => {
+          timeLeft--;
+          countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
+          channel.postMessage({ type: "update", linkId, timeLeft });
 
-      // Detect if the new tab is closed early
-      const monitor = setInterval(() => {
-        if (newTab.closed && timeLeft > 0) {
-          clearInterval(timer);
-          clearInterval(monitor);
-          countdownEl.textContent = "❌ Reward cancelled. Tab closed too early.";
-          button.disabled = false;
-          button.classList.remove("opacity-50", "cursor-not-allowed");
-        }
-      }, 1000);
+          if (timeLeft <= 0) {
+            clearInterval(timer);
+            countdownEl.textContent = "🎉 Reward earned!";
+            form.submit();
+            button.disabled = true;
+            button.classList.add("opacity-50", "cursor-not-allowed");
+            channel.postMessage({ type: "complete", linkId });
+
+            // Reload page after 2 seconds to load next task
+            setTimeout(() => {
+              location.reload();
+            }, 2000);
+          }
+        }, 1000);
+
+        // Detect if the new tab is closed early
+        const monitor = setInterval(() => {
+          if (newTab.closed && timeLeft > 0) {
+            clearInterval(timer);
+            clearInterval(monitor);
+            countdownEl.textContent = "❌ Reward cancelled. Tab closed too early.";
+            button.disabled = false;
+            button.classList.remove("opacity-50", "cursor-not-allowed");
+            button.clicked = false;
+          }
+        }, 1000);
+      });
     });
+
+    // Sync countdown across tabs
+    channel.onmessage = (event) => {
+      const { type, linkId, timeLeft } = event.data;
+      const el = document.querySelector(`#countdown-${linkId}`);
+      if (!el) return;
+
+      if (type === "update") {
+        el.classList.remove("hidden");
+        el.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
+      }
+
+      if (type === "complete") {
+        el.textContent = "🎉 Reward earned!";
+      }
+    };
   });
-
-  // Sync countdown across tabs
-  channel.onmessage = (event) => {
-    const { type, linkId, timeLeft } = event.data;
-    const el = document.querySelector(`#countdown-${linkId}`);
-    if (!el) return;
-
-    if (type === "update") {
-      el.classList.remove("hidden");
-      el.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-    }
-
-    if (type === "complete") {
-      el.textContent = "🎉 Reward earned!";
-    }
-  };
-});
-
 </script>

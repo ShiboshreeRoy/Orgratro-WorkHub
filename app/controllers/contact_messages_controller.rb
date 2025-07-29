@@ -12,7 +12,7 @@ class ContactMessagesController < ApplicationController
   end
 
   def create
-    @contact_message = ContactMessage.new(contact_message_params)
+    @contact_message = ContactMessage.new(contact_message_params.merge(user: current_user))
     if @contact_message.save
       # Optionally: ContactMailer.with(contact_message: @contact_message).notify_admin.deliver_now
       redirect_to new_contact_message_path, notice: "Message sent successfully!"

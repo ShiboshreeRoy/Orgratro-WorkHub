@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_15_012259) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_29_190826) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_15_012259) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_contact_messages_on_user_id"
   end
 
   create_table "learn_and_earns", force: :cascade do |t|
@@ -100,6 +102,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_15_012259) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "user_links", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "link_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["link_id"], name: "index_user_links_on_link_id"
+    t.index ["user_id"], name: "index_user_links_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -129,10 +140,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_15_012259) do
   add_foreign_key "clicks", "learn_and_earns"
   add_foreign_key "clicks", "links"
   add_foreign_key "clicks", "users"
+  add_foreign_key "contact_messages", "users"
   add_foreign_key "learn_and_earns", "links"
   add_foreign_key "learn_and_earns", "users"
   add_foreign_key "links", "learn_and_earns"
   add_foreign_key "links", "users"
   add_foreign_key "notifications", "users"
+  add_foreign_key "user_links", "links"
+  add_foreign_key "user_links", "users"
   add_foreign_key "withdrawals", "users"
 end

@@ -36,8 +36,12 @@ resources :links
   member do
     get :toggle_suspend
   patch :toggle_suspend
+  
   end
 end
+
+
+
 
 
   resources :admin_dashbord, only: [:index]

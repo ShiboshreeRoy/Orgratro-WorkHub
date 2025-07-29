@@ -13,6 +13,10 @@ class User < ApplicationRecord
   has_many :learn_and_earns, dependent: :destroy
   has_many :contact_message, dependent: :destroy
 
+  has_many :user_links
+  has_many :seen_links, through: :user_links, source: :link
+
+
   def total_earned
     clicks.count* 0.0003222222222
   end
