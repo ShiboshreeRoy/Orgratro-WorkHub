@@ -1,0 +1,47 @@
+<body class="bg-black text-white ">
+<%# app/views/user_dashbord/index.html.erb %>
+
+<h1 class="text-2xl font-bold mb-4">Task Dashboard</h1>
+
+<% if current_user.admin? %>
+  <h2 class="text-xl font-semibold mb-2">All User Tasks</h2>
+
+  <% if @user_tasks.any? %>
+    <% @user_tasks.each do |ut| %>
+      <div class="p-4 mb-2 border rounded bg-black-50">
+        <p><strong>User:</strong> <%= ut.user.email %></p>
+        <p><strong>Task:</strong> <%= ut.task.name %></p>
+        <p><strong>Proof:</strong> <%= ut.proof.presence || "Not submitted" %></p>
+
+        <% if ut.approved %>
+          <p class="text-green-600 font-bold">✅ Approved</p>
+        <% else %>
+          <%= button_to "Approve", approve_user_task_path(ut), method: :post, class: "px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No tasks submitted yet.</p>
+  <% end %>
+
+<% else %>
+  <h2 class="text-xl font-semibold mb-2">Your Tasks</h2>
+
+  <% if current_user.user_tasks.any? %>
+    <% current_user.user_tasks.each do |ut| %>
+      <div class="p-4 mb-2 border rounded bg-black-50 text-white">
+        <p><strong>Task:</strong> <%= ut.task.name %></p>
+        <p><strong>Proof:</strong> <%= ut.proof.presence || "Not submitted" %></p>
+        <% if ut.approved %>
+          <p class="text-green-600 font-bold">✅ Approved</p>
+        <% else %>
+         <p class="text-red-600 font-bold">⭕Panding</p>
+            <% end %>
+        <%= link_to "Submit/Prove", edit_user_task_path(ut), class: "px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition" %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>You have no tasks assigned yet.</p>
+  <% end %>
+<% end %>
+</body>

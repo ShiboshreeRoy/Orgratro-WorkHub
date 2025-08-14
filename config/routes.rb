@@ -62,6 +62,23 @@ end
     get :about_developer
   end
 end
+  
+
+resources :tasks do
+
+  member do
+    get :send_to_all
+  end
+   resources :user_tasks, only: [:new, :create]
+end
+
+
+resources :user_tasks do
+  member do
+    post :approve
+  end
+end
+
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

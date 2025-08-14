@@ -1,0 +1,22 @@
+<h1>Tasks</h1>
+
+<%= link_to "New Task", new_task_path, class: "btn btn-primary" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Actions</th>
+  </tr>
+  <% @tasks.each do |task| %>
+    <tr>
+      <td><%= task.name %></td>
+      <td><%= task.task_type %></td>
+      <td>
+        <%= link_to "Edit", edit_task_path(task) %> |
+        <%= link_to "Delete", task_path(task), method: :delete, data: { confirm: "Are you sure?" } %> |
+        <%= link_to "Send to All", send_to_all_task_path(task), method: :post, data: { confirm: "Send to all users?" } %>
+      </td>
+    </tr>
+  <% end %>
+</table>

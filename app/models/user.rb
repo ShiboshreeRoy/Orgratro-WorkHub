@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
          
-  validates :name, presence: true
-  validates :wp_number, presence: true, format: { with: /\A\+?\d{10,15}\z/, message: "must be a valid phone number" }
+  #validates :name, presence: true
+  #validates :wp_number, presence: true, format: { with: /\A\+?\d{10,15}\z/, message: "must be a valid phone number" }
 
          
   enum role: { standard: 1, admin: 2 }
@@ -16,9 +16,14 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :learn_and_earns, dependent: :destroy
   has_many :contact_message, dependent: :destroy
+  
+  #validates :proof, presence: true, on: :update  # proof required when user submits
 
   has_many :user_links
   has_many :seen_links, through: :user_links, source: :link
+ 
+  has_many :user_tasks, dependent: :destroy
+  has_many :tasks, through: :user_tasks
 
 
   def total_earned

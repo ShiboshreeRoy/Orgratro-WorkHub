@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_13_222422) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_14_090213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,6 +77,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_222422) do
     t.index ["user_id"], name: "index_learn_and_earns_on_user_id"
   end
 
+  create_table "learn_and_earns_users", id: false, force: :cascade do |t|
+    t.bigint "learn_and_earn_id", null: false
+    t.bigint "user_id", null: false
+  end
+
   create_table "links", force: :cascade do |t|
     t.string "title"
     t.string "url", null: false
@@ -102,6 +107,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_222422) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.string "name"
+    t.string "task_type"
+    t.string "link"
+    t.text "description"
+    t.integer "admin_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_tasks_on_user_id"
+  end
+
   create_table "user_links", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "link_id", null: false
@@ -109,6 +126,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_222422) do
     t.datetime "updated_at", null: false
     t.index ["link_id"], name: "index_user_links_on_link_id"
     t.index ["user_id"], name: "index_user_links_on_user_id"
+  end
+
+  create_table "user_tasks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.text "proof"
+    t.boolean "approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_user_tasks_on_task_id"
+    t.index ["user_id"], name: "index_user_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -124,6 +152,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_222422) do
     t.boolean "suspended"
     t.string "name", default: "", null: false
     t.string "wp_number", default: "", null: false
+    t.string "proof"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -148,7 +177,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_222422) do
   add_foreign_key "links", "learn_and_earns"
   add_foreign_key "links", "users"
   add_foreign_key "notifications", "users"
+  add_foreign_key "tasks", "users"
   add_foreign_key "user_links", "links"
   add_foreign_key "user_links", "users"
+  add_foreign_key "user_tasks", "tasks"
+  add_foreign_key "user_tasks", "users"
   add_foreign_key "withdrawals", "users"
 end

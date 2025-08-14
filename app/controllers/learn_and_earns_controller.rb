@@ -96,6 +96,10 @@ class LearnAndEarnsController < ApplicationController
     end
 
     def user_proof_params
-      params.require(:learn_and_earn).permit(:proof)
+     # params.require(:learn_and_earn).permit(:proof)
+      #params.require(:learn_and_earn).permit(:link, :social_post, :proof, :status, :user_id)
+      params.require(:learn_and_earn).permit(:link, :social_post, :proof, :status, user_ids: [])
+
+
     end
 end
