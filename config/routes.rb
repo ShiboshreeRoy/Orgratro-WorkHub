@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
   
+  
   namespace :admin do
     resources :notifications, only: [:new, :create]
   end
   
  
   get "user_dashbord/index"
+  get "reports/index"
+  get "profile/index"
+  get "reports/user_clicks", to: "reports#user_clicks"
+  get "reports/user_clicks.pdf", to: "reports#user_clicks", defaults: { format: :pdf }
+
   resources :withdrawals
  resources :clicks, only: [:create]
 
@@ -21,7 +27,9 @@ Rails.application.routes.draw do
 
   
 
-resources :links
+   resources :links do
+    collection { post :import }
+   end
 
   post "click_link/:id", to: "clicks#create", as: "click_link"
   get "click_window/:id", to: "links#click_window", as: :click_window

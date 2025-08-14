@@ -10,6 +10,9 @@ class LinksController < ApplicationController
     @links = Link.all
   end
 
+
+
+
   # GET /links/1 or /links/1.json
   def show
     @link = Link.find(params[:id])
@@ -45,7 +48,7 @@ end
   end
 '''
 
-def create
+'''def create
     @link = Link.new(link_params)
     @link.user = current_user
     @link.learn_and_earn = @learn_and_earn if @learn_and_earn
@@ -56,6 +59,61 @@ def create
       render :new, status: :unprocessable_entity
     end
   end
+'''
+def create
+  created_links = []
+
+  if params[:link][:files].present?
+    # Handle multiple Excel file uploads
+    params[:link][:files].each do |uploaded_file|
+      # Only actual uploaded files are expected here
+      next unless uploaded_file.is_a?(ActionDispatch::Http::UploadedFile)
+
+      # Detect Excel extension
+      extension = File.extname(uploaded_file.original_filename).delete('.').downcase
+
+      # Read spreadsheet directly from uploaded file
+      spreadsheet = Roo::Spreadsheet.open(uploaded_file.tempfile.path, extension: extension)
+      header = spreadsheet.row(1)
+
+      (2..spreadsheet.last_row).each do |i|
+        row = Hash[[header, spreadsheet.row(i)].transpose]
+
+        # Create a new link per row
+        link = Link.new(
+          url: row["url"],           # Excel column must be "url"
+          user: current_user,
+          learn_and_earn: @learn_and_earn
+        )
+
+        # Attach the uploaded file to the link
+        link.files.attach(uploaded_file)
+
+        created_links << link if link.save
+      end
+    end
+
+    if created_links.any?
+      redirect_to links_path, notice: "#{created_links.count} link(s) created from Excel file(s)."
+    else
+      redirect_to links_path, alert: "No valid links found in the uploaded file(s)."
+    end
+
+  else
+    # Handle single manual URL submission
+    @link = Link.new(link_params)
+    @link.user = current_user
+    @link.learn_and_earn = @learn_and_earn if @learn_and_earn
+
+    if @link.save
+      # Optional single file attachment
+      @link.files.attach(params[:link][:file]) if params[:link][:file].present?
+      redirect_to links_path, notice: "Link was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+end
 
 
 # click action to handle link clicks
@@ -95,6 +153,7 @@ def create
   # DELETE /links/1 or /links/1.json
   def destroy
      @link = Link.find(params[:id])
+     @link.user_links.destroy_all
     @link.destroy!
 
     respond_to do |format|
@@ -112,6 +171,6 @@ def create
 
     # Only allow a list of trusted parameters through.
     def link_params
-      params.require(:link).permit(:url, :total_clicks, :user_id, :learn_and_earn_id)
+      params.require(:link).permit(:url, :total_clicks, :file, :user_id, :learn_and_earn_id)
     end
 end

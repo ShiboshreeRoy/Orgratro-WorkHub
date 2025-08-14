@@ -67,3 +67,19 @@ gem "dockerfile-rails", ">= 1.7", group: :development
 #gem "redis", "~> 5.4"
 
 gem "ransack", "~> 4.3"
+
+gem "roo", "~> 2.10"
+
+gem "csv", "~> 3.3"
+
+gem "kaminari", "~> 1.2"
+gem "chartkick", "~> 5.2"
+gem "groupdate", "~> 6.7"
+gem "wicked_pdf", "~> 2.8"
+
+
+gem "wkhtmltopdf-binary", "~> 0.12.6"
+
+gem "prawn", "~> 2.5"
+
+gem "prawn-table", "~> 0.2.2"

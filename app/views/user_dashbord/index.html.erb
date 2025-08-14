@@ -4,17 +4,27 @@
     <!-- Sidebar (Collapsible on small screens) -->
     <aside class="w-full md:w-64 bg-gray-900 shadow-lg p-6 hidden md:block">
       <h1 class="text-2xl font-bold text-blue-400 mb-8">
-        <i class="fas fa-network-wired mr-2"></i>Orgratro IT
+        <i class="fas fa-network-wired mr-2"></i>Orgratro Workhub
       </h1>
 
       <nav class="space-y-4 text-sm">
         <span class="block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition">
-          <i class="fas fa-user-circle mr-2"></i>Hello <%= current_user.email.split("@").first.capitalize %>!
+          <i class="fas fa-user-circle mr-2"></i>Hello <span>
+        <%= current_user.name.presence || current_user.email.split("@").first.capitalize if user_signed_in? %>
+
+      </span>
+
         </span>
 
         <%= link_to user_dashbord_index_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
           <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
         <% end %>
+
+         <%= link_to profile_index_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition flex items-center" do %>
+            <i class="fas fa-user mr-2"></i>My Profile
+        <% end %>
+
+
 
         <%= link_to learn_and_earns_path, class: "block px-4 py-2 rounded hover:bg-gray-800 text-blue-300 transition" do %>
           <i class="fas fa-graduation-cap mr-2"></i> Learn & Earn

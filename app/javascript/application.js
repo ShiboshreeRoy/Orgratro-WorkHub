@@ -2,6 +2,8 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "./toast"
+import "chartkick/chart.js"
+
 //import "@rails/ujs"
 //Rails.start()
 
