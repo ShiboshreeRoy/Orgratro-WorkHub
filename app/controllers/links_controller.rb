@@ -7,10 +7,8 @@ class LinksController < ApplicationController
 
   # GET /links or /links.json
   def index
-    @links = Link.all
+      @links = Link.page(params[:page]).per(10)  # 10 items per page
   end
-
-
 
 
   # GET /links/1 or /links/1.json

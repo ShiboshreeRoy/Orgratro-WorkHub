@@ -83,3 +83,4 @@ gem "wkhtmltopdf-binary", "~> 0.12.6"
 gem "prawn", "~> 2.5"
 
 gem "prawn-table", "~> 0.2.2"
+

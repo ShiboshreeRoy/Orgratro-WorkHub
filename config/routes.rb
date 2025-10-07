@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   
   
+  
   namespace :admin do
     resources :notifications, only: [:new, :create]
   end
@@ -25,7 +26,9 @@ Rails.application.routes.draw do
 
   resources :contact_messages, only: [:new, :create, :index, :show, :destroy]
 
-  
+   devise_for :users, 
+  controllers: { registrations: 'users/registrations' }, 
+  sign_out_via: [:get, :delete]
 
    resources :links do
     collection { post :import }
@@ -35,9 +38,7 @@ Rails.application.routes.draw do
   get "click_window/:id", to: "links#click_window", as: :click_window
   
 
-  devise_for :users, 
-  controllers: { registrations: 'users/registrations' }, 
-  sign_out_via: [:get, :delete]
+ 
 
 
   resources :admin, only: [:index, :create, :edit, :update, :show, :destroy], controller: 'admin' do

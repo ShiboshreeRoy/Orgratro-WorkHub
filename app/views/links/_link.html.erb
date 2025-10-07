@@ -1,113 +1,116 @@
-<div id="<%= dom_id link %>" class="w-full sm:w-auto my-5 max-w-md mx-auto">
-  <div class="bg-white dark:bg-gray-900 shadow-xl rounded-3xl p-6 space-y-5 border border-gray-300 dark:border-gray-700 transition-shadow duration-300 hover:shadow-blue-400 dark:hover:shadow-blue-900 relative">
-    
-    <!-- Header -->
-    <div>
-      <strong class="block text-gray-900 dark:text-gray-100 text-lg font-semibold mb-2">
-        বাংলাদেশের ৬৪টি জেলা:
-      </strong>
-      <p class="text-blue-700 dark:text-blue-400 break-words text-base underline decoration-dotted decoration-2">
-        <% countries = [
-                        "ঢাকা", "গাজীপুর", "কিশোরগঞ্জ", "মানিকগঞ্জ", "মুন্সীগঞ্জ", "নারায়ণগঞ্জ", "নরসিংদী", "রাজবাড়ী", "টাঙ্গাইল", "মাদারীপুর", "গোপালগঞ্জ", "শরীয়তপুর",
-                        "চট্টগ্রাম", "কক্সবাজার", "বান্দরবান", "খাগড়াছড়ি", "রাঙ্গামাটি", "ব্রাহ্মণবাড়িয়া", "কুমিল্লা", "চাঁদপুর", "ফেনী", "লক্ষ্মীপুর", "নোয়াখালী",
-                        "রাজশাহী", "নাটোর", "নওগাঁ", "চাঁপাইনবাবগঞ্জ", "পাবনা", "বগুড়া", "সিরাজগঞ্জ", "জয়পুরহাট",
-                        "খুলনা", "বাগেরহাট", "সাতক্ষীরা", "যশোর", "ঝিনাইদহ", "মাগুরা", "কুষ্টিয়া", "চুয়াডাঙ্গা", "নড়াইল", "মেহেরপুর",
-                        "বরিশাল", "ভোলা", "পটুয়াখালী", "পিরোজপুর", "বরগুনা", "ঝালকাঠি",
-                        "সিলেট", "সুনামগঞ্জ", "মৌলভীবাজার", "হবিগঞ্জ",
-                        "রংপুর", "দিনাজপুর", "ঠাকুরগাঁও", "পঞ্চগড়", "নীলফামারী", "গাইবান্ধা", "কুড়িগ্রাম", "লালমনিরহাট",
-                        "ময়মনসিংহ", "জামালপুর", "শেরপুর", "নেত্রকোনা"
-                      ] %>
-        <% country_name = countries.sample %>
+<!-- Wrapper -->
+<div class="max-w-6xl mx-auto px-4">
 
-        <%= link_to country_name, link.url, target: "_blank", rel: "noopener", class: "hover:text-blue-500 transition-colors" %>
-      </p>
-    </div>
+  <!-- Grid of Link Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @links.each do |link| %>
+      <div id="<%= dom_id link %>" 
+           class="task-block transition duration-500 opacity-100 scale-100"
+           data-link-id="<%= link.id %>" 
+           data-link-url="<%= link.url %>">
 
-    <!-- Click & Earn Button -->
-    <button data-link-id="<%= link.id %>" data-link-url="<%= link.url %>"
-      class="start-click w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:scale-95 transition-transform text-white font-semibold py-3 px-6 rounded-full shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50">
-      Click & Earn
-    </button>
+        <div class="bg-white dark:bg-gray-900 shadow-lg rounded-2xl p-6 space-y-5 border border-gray-200 dark:border-gray-700 hover:shadow-blue-400 dark:hover:shadow-blue-900 transition-shadow duration-300">
+          
+          <!-- Click & Earn Button -->
+          <button 
+            class="start-click w-full bg-blue-600 hover:bg-blue-700 active:scale-95 transition-transform text-white font-semibold py-3 px-6 rounded-full shadow-md focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50">
+            Click & Earn
+          </button>
 
-    <!-- Countdown -->
-    <div id="countdown-<%= link.id %>" class="hidden text-center text-yellow-500 font-bold text-lg mt-5 select-none"></div>
+          <!-- Status -->
+          <div id="status-<%= link.id %>" class="hidden text-center text-green-500 font-bold text-lg mt-3"></div>
+          <div id="countdown-<%= link.id %>" class="hidden text-center text-yellow-500 font-semibold mt-2"></div>
 
-    <!-- Auto Submit Form -->
-    <%= form_with url: click_link_path(link), method: :post, local: true, html: { id: "auto-submit-form-#{link.id}", class: "hidden" } do %>
-      <%= hidden_field_tag :auto_claim, true %>
+          <!-- Auto Submit Form -->
+          <%= form_with url: click_link_path(link), method: :post, local: true, html: { id: "auto-submit-form-#{link.id}", class: "hidden" } do %>
+            <%= hidden_field_tag :auto_claim, true %>
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
+
+
 </div>
 
+
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const channel = new BroadcastChannel("click_earn_channel");
+document.addEventListener("DOMContentLoaded", () => {
+  const blocks = document.querySelectorAll(".task-block");
+  const cooldown = 24 * 60 * 60 * 1000; // 24h
 
-    document.querySelectorAll(".start-click").forEach(button => {
-      button.addEventListener("click", () => {
-        if (button.clicked) return;
-        button.clicked = true;
+  blocks.forEach(block => {
+    const linkId = block.dataset.linkId;
+    const linkUrl = block.dataset.linkUrl;
+    const button = block.querySelector(".start-click");
+    const statusEl = document.querySelector(`#status-${linkId}`);
+    const countdownEl = document.querySelector(`#countdown-${linkId}`);
+    const form = document.querySelector(`#auto-submit-form-${linkId}`);
+    const key = `task_${linkId}`;
 
-        const linkId = button.dataset.linkId;
-        const linkUrl = button.dataset.linkUrl;
-        const countdownEl = document.querySelector(`#countdown-${linkId}`);
-        const form = document.querySelector(`#auto-submit-form-${linkId}`);
-        const newTab = window.open(`/click_window/${linkId}?url=${encodeURIComponent(linkUrl)}`, "_blank");
+    // ✅ Check saved state
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Date.now() - parsed.time < cooldown) {
+          hideBlock(block);
+          return;
+        } else {
+          localStorage.removeItem(key);
+          document.cookie = `${key}=; path=/; max-age=0`;
+        }
+      } catch { localStorage.removeItem(key); }
+    }
 
-        let timeLeft = 30;
-        button.disabled = true;
-        button.classList.add("opacity-50", "cursor-not-allowed");
-        countdownEl.classList.remove("hidden");
-        countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
+    // ✅ Handle click
+    button.addEventListener("click", () => {
+      if (button.clicked) return;
+      button.clicked = true;
 
-        const timer = setInterval(() => {
-          timeLeft--;
-          countdownEl.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-          channel.postMessage({ type: "update", linkId, timeLeft });
+      const newTab = window.open(`/click_window/${linkId}?url=${encodeURIComponent(linkUrl)}`, "_blank");
+      if (!newTab) {
+        statusEl.textContent = "❌ Popup blocked! Please allow popups.";
+        statusEl.classList.remove("hidden");
+        button.clicked = false;
+        return;
+      }
 
-          if (timeLeft <= 0) {
-            clearInterval(timer);
-            countdownEl.textContent = "🎉 Reward earned!";
-            form.submit();
-            button.disabled = true;
-            button.classList.add("opacity-50", "cursor-not-allowed");
-            channel.postMessage({ type: "complete", linkId });
+      // Show countdown
+      let timeLeft = 10;
+      countdownEl.classList.remove("hidden");
+      countdownEl.textContent = `⏳ Please wait ${timeLeft}s...`;
+      
+      const timer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          countdownEl.textContent = `⏳ Please wait ${timeLeft}s...`;
+        } else {
+          clearInterval(timer);
 
-            // Reload page after 2 seconds to load next task
-            setTimeout(() => {
-              location.reload();
-            }, 2000);
-          }
-        }, 1000);
+          // ✅ Confirm completion
+          localStorage.setItem(key, JSON.stringify({ status: "done", time: Date.now() }));
+          document.cookie = `${key}=done; path=/; max-age=${60 * 60 * 24 * 2}`;
+          form.submit();
+          statusEl.textContent = "🎉 Task completed successfully!";
+          statusEl.classList.remove("hidden");
 
-        // Detect if the new tab is closed early
-        const monitor = setInterval(() => {
-          if (newTab.closed && timeLeft > 0) {
-            clearInterval(timer);
-            clearInterval(monitor);
-            countdownEl.textContent = "❌ Reward cancelled. Tab closed too early.";
-            button.disabled = false;
-            button.classList.remove("opacity-50", "cursor-not-allowed");
-            button.clicked = false;
-          }
-        }, 1000);
-      });
+          // Animate & hide block
+          hideBlock(block);
+        }
+      }, 1000);
     });
-
-    // Sync countdown across tabs
-    channel.onmessage = (event) => {
-      const { type, linkId, timeLeft } = event.data;
-      const el = document.querySelector(`#countdown-${linkId}`);
-      if (!el) return;
-
-      if (type === "update") {
-        el.classList.remove("hidden");
-        el.textContent = `⏳ Wait ${timeLeft}s to earn reward...`;
-      }
-
-      if (type === "complete") {
-        el.textContent = "🎉 Reward earned!";
-      }
-    };
   });
+
+  // ✅ Always show at least one link
+  if (![...blocks].some(b => b.style.display !== "none") && blocks.length > 0) {
+    blocks[Math.floor(Math.random() * blocks.length)].style.display = "block";
+  }
+
+  // 🔹 Helper: Smooth hide animation
+  function hideBlock(block) {
+    block.classList.add("opacity-0", "scale-95");
+    setTimeout(() => block.style.display = "none", 500); // match transition duration
+  }
+});
 </script>
