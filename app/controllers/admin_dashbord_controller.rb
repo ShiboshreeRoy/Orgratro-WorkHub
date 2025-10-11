@@ -7,6 +7,7 @@ class AdminDashbordController < ApplicationController
     @total_click = Click.all
     @total_link = Link.all
     @user_task = UserTask.all
+    @referrals = Referral.all   
      @recent_users = User.order(created_at: :desc).limit(5)
      # @total_withdrawals = Withdrawal.sum(:amount)
   end

@@ -1,0 +1,127 @@
+<body class="bg-black text-blue-400 ">
+
+  <!-- Referral Card -->
+  <div class="w-full max-w-md sm:max-w-lg lg:max-w-xl flex flex-col items-center bg-gradient-to-br mt-5 from-gray-900/70 via-gray-800/60 to-gray-900/70 backdrop-blur-md border border-blue-500/40 rounded-2xl shadow-xl transform transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+    
+    <div class="p-6 w-full">
+      <h3 class="text-3xl sm:text-4xl font-extrabold text-blue-400 drop-shadow-lg text-center">Referrals</h3>
+      
+      <p class="mt-5 text-gray-200 text-center">
+        Referral balance: 
+        <strong class="text-blue-500 font-semibold text-lg sm:text-xl"><%= number_with_precision(current_user.referral_balance, precision: 8) %></strong>
+      </p>
+      
+      <p class="mt-2 text-gray-200 text-center">
+        Total successful referrals: 
+        <strong class="text-blue-500 font-semibold text-lg sm:text-xl"><%= current_user.total_referrals %></strong>
+      </p>
+
+      <div class="mt-6">
+        <label class="block text-gray-300 mb-2 font-medium tracking-wide">Your referral link</label>
+        <% referral = current_user.last_or_new_referral %>
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <input 
+            readonly 
+            id="referral-link" 
+            value="<%= referral_link_for(referral) %>" 
+            class="flex-1 bg-gray-900/40 text-gray-100 placeholder-gray-400 border border-blue-500/40 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 transition placeholder-shown:italic w-full"
+          />
+          <button 
+            data-action="click->clipboard#copy" 
+            data-clipboard-target="#referral-link" 
+            class="bg-blue-500 text-black font-bold px-5 py-3 rounded-xl shadow-lg hover:bg-blue-400 hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 w-full sm:w-auto mt-3 sm:mt-0"
+          >
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- View Rules Button -->
+      <div class="flex justify-center mt-6">
+        <button 
+          id="open-rules" 
+          class="bg-blue-500 text-black font-bold px-6 py-3 rounded-xl shadow-lg hover:bg-blue-400 hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1"
+        >
+          View Referral Rules
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div id="rules-modal" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm hidden z-50 items-center justify-center">
+    <div id="rules-card" class="bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-gray-900/80 border border-blue-500/40 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 sm:mx-0 p-6 overflow-y-auto max-h-[90vh] transform transition-all duration-300 scale-90 opacity-0">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-3xl font-extrabold text-blue-400 drop-shadow-lg">Referral Program Rules</h2>
+        <button id="close-rules" class="text-gray-400 hover:text-white text-2xl font-bold">&times;</button>
+      </div>
+
+      <ul class="space-y-4 text-gray-200">
+        <li><strong class="text-blue-500">1. Eligibility:</strong> Only registered users with an active account can participate. Self-referrals are strictly prohibited.</li>
+        <li><strong class="text-blue-500">2. How to Refer:</strong> Share your unique referral link or code. The referred person must sign up using it to qualify.</li>
+        <li><strong class="text-blue-500">3. Referral Rewards:</strong> Earn 0.005 per successful referral after the referred user completes required actions. Rewards are cumulative.</li>
+        <li><strong class="text-blue-500">4. Limitations:</strong> Only new users qualify. Maximum reward caps may apply. Rewards are non-transferable.</li>
+        <li><strong class="text-blue-500">5. Misuse & Fraud:</strong> Fake accounts, multiple accounts, or any fraudulent activity will result in disqualification.</li>
+        <li><strong class="text-blue-500">6. Termination or Modification:</strong> Program rules may change at any time. Past valid rewards remain credited unless fraud is detected.</li>
+        <li><strong class="text-blue-500">7. Disclaimer:</strong> Platform is not responsible for lost rewards due to technical errors or misuse.</li>
+      </ul>
+
+      <div class="mt-6 text-center">
+        <button id="close-rules-bottom" class="bg-blue-500 text-black font-bold px-6 py-3 rounded-xl shadow-lg hover:bg-blue-400 hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Clipboard Copy
+    document.addEventListener("DOMContentLoaded", function() {
+      if (!navigator.clipboard) return;
+      document.querySelectorAll('button[data-action="click->clipboard#copy"]').forEach(button => {
+        button.addEventListener("click", async function() {
+          const targetSelector = button.getAttribute("data-clipboard-target");
+          const input = document.querySelector(targetSelector);
+          if (input) {
+            try {
+              await navigator.clipboard.writeText(input.value);
+              button.textContent = "Copied!";
+              button.classList.add("animate-bounce", "bg-green-400", "text-black");
+              setTimeout(() => {
+                button.textContent = "Copy";
+                button.classList.remove("animate-bounce", "bg-green-400", "text-black");
+                button.classList.add("bg-blue-500");
+              }, 2000);
+            } catch(err) { console.error("Failed to copy: ", err); }
+          }
+        });
+      });
+    });
+
+    // Modal Open/Close
+    const openBtn = document.getElementById('open-rules');
+    const modal = document.getElementById('rules-modal');
+    const card = document.getElementById('rules-card');
+    const closeBtn = document.getElementById('close-rules');
+    const closeBtnBottom = document.getElementById('close-rules-bottom');
+
+    const openModal = () => {
+      modal.classList.remove('hidden');
+      card.classList.remove('scale-90', 'opacity-0');
+      card.classList.add('scale-100', 'opacity-100');
+    };
+
+    const closeModal = () => {
+      card.classList.remove('scale-100', 'opacity-100');
+      card.classList.add('scale-90', 'opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    };
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    closeBtnBottom.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+  </script>
+
+</body>

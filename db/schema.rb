@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_14_090213) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_11_154716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -107,6 +107,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_14_090213) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "referrals", force: :cascade do |t|
+    t.bigint "referrer_id", null: false
+    t.bigint "referred_user_id"
+    t.string "token", null: false
+    t.string "invite_email"
+    t.decimal "reward_amount", precision: 16, scale: 8, default: "0.005", null: false
+    t.boolean "claimed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["referred_user_id"], name: "index_referrals_on_referred_user_id"
+    t.index ["referrer_id"], name: "index_referrals_on_referrer_id"
+    t.index ["token"], name: "index_referrals_on_token", unique: true
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "name"
     t.string "task_type"
@@ -153,7 +167,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_14_090213) do
     t.string "name", default: "", null: false
     t.string "wp_number", default: "", null: false
     t.string "proof"
+    t.string "referral_code", null: false
+    t.string "referred_by"
+    t.decimal "wallet_balance", precision: 10, scale: 6, default: "0.0"
+    t.integer "total_referrals", default: 0
+    t.decimal "referral_balance", precision: 16, scale: 8, default: "0.0", null: false
+    t.bigint "referred_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["referred_by_id"], name: "index_users_on_referred_by_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -177,10 +198,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_14_090213) do
   add_foreign_key "links", "learn_and_earns"
   add_foreign_key "links", "users"
   add_foreign_key "notifications", "users"
+  add_foreign_key "referrals", "users", column: "referred_user_id"
+  add_foreign_key "referrals", "users", column: "referrer_id"
   add_foreign_key "tasks", "users"
   add_foreign_key "user_links", "links"
   add_foreign_key "user_links", "users"
   add_foreign_key "user_tasks", "tasks"
   add_foreign_key "user_tasks", "users"
+  add_foreign_key "users", "users", column: "referred_by_id"
   add_foreign_key "withdrawals", "users"
 end

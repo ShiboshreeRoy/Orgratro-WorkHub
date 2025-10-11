@@ -1,6 +1,14 @@
 class WelcomeController < ApplicationController
   def index
     @active_user = User.all
+     
+    @referrals = Referral.includes(:user, :referrer).order(created_at: :desc)
+    @recent_referred = Referral.includes(:user, :referrer)
+                           .where.not(user_id: nil)
+                           .order(created_at: :desc)
+                           .limit(10)
+
+ 
   end
 
   def about

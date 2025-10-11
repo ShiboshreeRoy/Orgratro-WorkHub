@@ -50,7 +50,7 @@ Rails.application.routes.draw do
 end
 
 
-
+resources :referrals, only: [:index, :create]
 
 
   resources :admin_dashbord, only: [:index]
